@@ -3,7 +3,7 @@ import 'package:event_bloc/src/event_bloc/event_channel.dart';
 
 final Function equality = const DeepCollectionEquality().equals;
 
-abstract class Bloc {
+abstract class Bloc implements Disposable {
   /// Add functions to this to be ran when the model is updated.
   List<void Function()> blocUpdated = [];
 
@@ -29,5 +29,6 @@ abstract class Bloc {
 
   void updateBloc() => blocUpdated.forEach((element) => element());
 
+  @override
   void dispose() {}
 }

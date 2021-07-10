@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class BlocNotifier<T extends Bloc> with ChangeNotifier {
-  final T model;
+  final T bloc;
 
-  BlocNotifier(this.model) {
-    model.blocUpdated.add(notifyListeners);
+  BlocNotifier(this.bloc) {
+    bloc.blocUpdated.add(notifyListeners);
   }
 }
 
@@ -17,6 +17,12 @@ class BlocProvider<T extends Bloc> extends StatefulWidget {
 
   const BlocProvider({Key? key, required this.child, required this.create})
       : super(key: key);
+
+  static T watch<T extends Bloc>(BuildContext context) =>
+      context.watch<BlocNotifier<T>>().bloc;
+
+  static T read<T extends Bloc>(BuildContext context) =>
+      context.read<BlocNotifier<T>>().bloc;
 
   @override
   _BlocProviderState<T> createState() => _BlocProviderState<T>();

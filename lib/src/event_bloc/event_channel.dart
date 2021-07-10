@@ -1,7 +1,7 @@
 /// Event Listener, return value is true if the event is to be stopped from propagating
 typedef BlocEventListener = bool Function(dynamic);
 
-class BlocEventChannel {
+class BlocEventChannel implements Disposable {
   final BlocEventChannel? _parentChannel;
   final Map<String, List<BlocEventListener>> _listeners = {};
 
@@ -29,8 +29,17 @@ class BlocEventChannel {
     potListeners.add(listener);
   }
 
-  /// Listens for the event, will return whether the event should be
-  /// propagated up the channel or not.
+  /// Adds a listener for the specific event type.
+  void removeEventListener(String eventType, BlocEventListener listener) {
+    List<BlocEventListener>? potListeners = _listeners[eventType];
+
+    potListeners?.remove(listener);
+  }
+
+  /// Executes the listeners for the [eventType] with the given [payload]
+  ///
+  /// Will return true if the event should no longer be propagated up the event
+  /// channel.
   bool _listenForEvent(String eventType, dynamic payload) {
     List<BlocEventListener>? potListeners = _listeners[eventType];
 
@@ -43,7 +52,12 @@ class BlocEventChannel {
         .reduce((a, b) => a || b);
   }
 
+  @override
   void dispose() {
     _listeners.clear();
   }
+}
+
+abstract class Disposable {
+  void dispose() {}
 }
