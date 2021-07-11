@@ -1,4 +1,4 @@
-import 'package:event_bloc/event_bloc.dart';
+import 'package:event_bloc/event_bloc_no_widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
