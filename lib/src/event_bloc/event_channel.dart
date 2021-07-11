@@ -7,6 +7,15 @@ class BlocEventChannel implements Disposable {
 
   BlocEventChannel([this._parentChannel]);
 
+  /// Helper function to simplify making a [BlocEventListener] by calling
+  /// [listener] and then returning [stopPropagation]
+  static BlocEventListener simpleListener(Function(dynamic) listener,
+          {stopPropagation = false}) =>
+      (dynamic) {
+        listener(dynamic);
+        return stopPropagation;
+      };
+
   /// Fires and event that is sent up the event channel, stopping only
   /// when it reaches the top or an event stops the propagation.
   void fireEvent(String eventType, dynamic payload) {
