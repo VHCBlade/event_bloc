@@ -1,3 +1,7 @@
+## 1.0.0+1
+
+* Fixed RepositoryProvider to provide BlocEventChannel rather than RepositorySource
+
 ## 1.0.0
 
 * Added BlocEventChannel, allowing for an event-based solution to State Management

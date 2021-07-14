@@ -1,6 +1,6 @@
 name: event_bloc
 description: A new Flutter package project.
-version: 1.0.0
+version: 1.0.0+1
 repository: https://github.com/VHCBlade/event_bloc
 
 environment:
