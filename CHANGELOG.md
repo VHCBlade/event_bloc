@@ -1,3 +1,8 @@
+## 1.0.1
+
+* Added More Documentation
+* Added Dispose Method to RepositorySource
+
 ## 1.0.0+1
 
 * Fixed RepositoryProvider to provide BlocEventChannel rather than RepositorySource

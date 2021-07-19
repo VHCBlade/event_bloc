@@ -37,6 +37,9 @@ class _RepositoryProviderState<T extends Repository>
   @override
   void dispose() {
     repo.dispose();
+    if (newSource) {
+      source.dispose();
+    }
     super.dispose();
   }
 
