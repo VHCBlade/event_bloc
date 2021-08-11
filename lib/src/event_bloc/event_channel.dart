@@ -3,7 +3,7 @@ typedef BlocEventListener = bool Function(dynamic);
 
 /// [BlocEventChannel] represents a node in a tree of event channels, mirroring the widget tree to an extent. The tree is only connected upwards (child knows its parent).
 ///
-/// [BlocEventListeners] can be added to each [BlocEventChannel]. These will listen to events fired directly to the event channel. By default, these events will also be propagated up the tree, effectively refiring the event to each parent.
+/// [BlocEventListener]s can be added to each [BlocEventChannel]. These will listen to events fired directly to the event channel. By default, these events will also be propagated up the tree, effectively refiring the event to each parent.
 ///
 /// [BlocProvider] and [RepositoryProvider] will both automatically Provide the event channel down the widget tree.
 ///

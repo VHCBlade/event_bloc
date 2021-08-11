@@ -4,6 +4,11 @@ import 'package:flutter/material.dart';
 
 final Function equality = const DeepCollectionEquality().equals;
 
+/// The main building block of your BLoC Layer!
+///
+/// Place all of your state management code here, along with any other business logic that is independent of specific platform implementations. Specific implementations belong in the [Repository] layer, and should be provided in the constructor of your own class that extends [Bloc]. Also be sure to add any event listeners you need in the constructor as well!
+///
+/// Any calls to [updateBloc] will cause the UI to redraw, given that you use [BlocProvider] to create and retrieve the [Bloc].
 abstract class Bloc implements Disposable {
   /// Add functions to this to be ran when the [Bloc] is updated.
   List<void Function()> blocUpdated = [];

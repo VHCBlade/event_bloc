@@ -2,6 +2,7 @@ import 'package:event_bloc/event_bloc_no_widgets.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
+/// Provides a [Repository] down the Widget tree. Will also automatically call necessary functions to initialize the [Repository].
 class RepositoryProvider<T extends Repository> extends StatefulWidget {
   final Widget child;
   final T Function(BuildContext) create;
