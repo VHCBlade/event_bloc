@@ -1,3 +1,7 @@
+## 1.1.1
+
+* Added BlocEventChannelProvider for easily reading BlocEventChannels from BuildContexts.
+
 ## 1.1.0
 
 * Added updateBlocOnFutureChange to Bloc to support asynchronous changes.
