@@ -1,3 +1,7 @@
+## 1.1.0
+
+* Added updateBlocOnFutureChange to Bloc to support asynchronous changes.
+
 ## 1.0.1
 
 * Added More Documentation

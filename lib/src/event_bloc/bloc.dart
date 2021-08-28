@@ -19,12 +19,30 @@ abstract class Bloc implements Disposable {
   /// Updates the [Bloc] after calling [change] if the value returned by [tracker] changes.
   ///
   /// Slightly less efficient than writing the code yourself, but reduces boilerplate.
+  ///
+  /// Note the [change] has to be a synchronous call. If [change] returns a future, use [updateBlocOnFutureChange] instead.
   void updateBlocOnChange(
-      {required void Function() change,
-      required List<dynamic> Function() tracker}) {
+      {required Function() change, required List Function() tracker}) {
     final track = tracker();
 
     change();
+
+    if (!equality(track, tracker())) {
+      updateBloc();
+    }
+  }
+
+  /// Updates the [Bloc] after calling [change] if the value returned by [tracker] changes.
+  ///
+  /// Slightly less efficient than writing the code yourself, but reduces boilerplate.
+  ///
+  /// Unlike the similar [updateBlocOnChange], this supports the change function returning a super.
+  Future<void> updateBlocOnFutureChange(
+      {required Future Function() change,
+      required List Function() tracker}) async {
+    final track = tracker();
+
+    await change();
 
     if (!equality(track, tracker())) {
       updateBloc();
