@@ -1,3 +1,7 @@
+## 2.0.0
+
+* Upgraded flutter packages to 3.0.0
+
 ## 1.1.1
 
 * Added BlocEventChannelProvider for easily reading BlocEventChannels from BuildContexts.
