@@ -1,5 +1,7 @@
+import 'package:event_bloc/event_bloc.dart';
+
 /// Event Listener, return value is true if the event is to be stopped from propagating
-typedef BlocEventListener = bool Function(dynamic);
+typedef BlocEventListener<T> = bool Function(T);
 
 /// [BlocEventChannel] represents a node in a tree of event channels, mirroring the widget tree to an extent. The tree is only connected upwards (child knows its parent).
 ///
@@ -16,14 +18,14 @@ class BlocEventChannel implements Disposable {
   BlocEventChannel([this._parentChannel]);
 
   /// Helper function to simplify making a [BlocEventListener] by calling [listener] and then returning [stopPropagation]
-  static BlocEventListener simpleListener(Function(dynamic) listener,
+  static BlocEventListener<T> simpleListener<T>(Function(T) listener,
           {stopPropagation = false}) =>
       (dynamic) {
         listener(dynamic);
         return stopPropagation;
       };
 
-  /// Fires and event that is sent up the event channel, stopping only
+  /// Fires an event that is sent up the event channel, stopping only
   /// when it reaches the top or an event stops the propagation.
   void fireEvent(String eventType, dynamic payload) {
     final shouldStopPropagation = _listenForEvent(eventType, payload);
@@ -33,8 +35,19 @@ class BlocEventChannel implements Disposable {
     }
   }
 
+  /// Fires an events that is sent up the event channel, stopping only
+  /// when it reaches the top or an event stops the propagation.
+  ///
+  /// This version allows you to define a list of events with an enforced type of payload.
+  void fireBlocEvent<T>(BlocEvent<T> eventType, T payload) {
+    fireEvent(eventType.eventName, payload);
+  }
+
   /// Adds a [listener] for the specific [eventType]. Multiple listeners can be added for each [eventType]
-  void addEventListener(String eventType, BlocEventListener listener) {
+  ///
+  /// Returns the added [listener] which when called with [removeEventListener] will remove the listener added with this function.
+  BlocEventListener addEventListener(
+      String eventType, BlocEventListener listener) {
     List<BlocEventListener>? potListeners = _listeners[eventType];
 
     if (potListeners == null) {
@@ -43,13 +56,48 @@ class BlocEventChannel implements Disposable {
     }
 
     potListeners.add(listener);
+
+    return listener;
   }
 
+  /// Adds a [BlocEventListener] which listens for the same type as the [event]. Multiple listeners can be added for each [event]
+  ///
+  /// This should be called with the generic [T] specified to ensure type safety.
+  ///
+  /// Returns the wrapped [listener]. You can then call [removeEventListener] to remove the listener added with this function.
+  BlocEventListener addBlocEventListener<T>(
+      BlocEvent<T> event, BlocEventListener<T> listener) {
+    return addEventListener(
+        event.eventName, _wrapSpecificListener(event, listener));
+  }
+
+  /// Wraps the specific [BlocEventListener] with type [T] into a [BlocEventListener] with a dynamic type.
+  BlocEventListener _wrapSpecificListener<T>(
+          BlocEvent<T> event, BlocEventListener<T> listener) =>
+      (val) {
+        if (val is! T) {
+          throw "Payload recieved for ${event.eventName} does not match the type $T and is ${val.runtimeType} instead.";
+        }
+        return listener(val);
+      };
+
   /// Removes the given [listener] from the given [eventType]. Will do nothing if [listener] doesn't exist.
+  ///
+  /// This is the method you call if you added the listener through [addEventListener]. [listener] being the returned
+  /// value from the function.
   void removeEventListener(String eventType, BlocEventListener listener) {
     List<BlocEventListener>? potListeners = _listeners[eventType];
 
     potListeners?.remove(listener);
+  }
+
+  /// Removes the given [listener] from the given [eventType]. Will do nothing if [listener] doesn't exist.
+  ///
+  /// This is the method you call if you added the listener through [addBlocEventListener]. [listener] being the returned
+  /// value from the function.
+  void removeBlocEventListener<T>(
+      BlocEvent<T> eventType, BlocEventListener listener) {
+    removeEventListener(eventType.eventName, listener);
   }
 
   /// Executes the listeners for the [eventType] with the given [payload]

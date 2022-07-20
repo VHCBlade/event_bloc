@@ -7,7 +7,9 @@ void main() {
 }
 
 const INCREMENT_EVENT = 'increment';
-const DECREMENT_EVENT = 'decrement';
+
+/// You can also make wrap the event name in a [BlocEvent] to automatically enforce the type agreement
+const DECREMENT_EVENT = BlocEvent<void>('decrement');
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -49,9 +51,8 @@ class ExampleScreen extends StatelessWidget {
         ElevatedButton(
             // Alternate way of calling using an event. This doesn't require
             // the bloc, just the event channel.
-            onPressed: () => context
-                .read<BlocEventChannel>()
-                .fireEvent(DECREMENT_EVENT, null),
+            onPressed: () => BlocEventChannelProvider.of(context)
+                .fireBlocEvent<void>(DECREMENT_EVENT, null),
             child: const Text('Decrement')),
       ]),
     );
@@ -73,7 +74,7 @@ class ExampleBloc extends Bloc {
     // directly.
     eventChannel.addEventListener(INCREMENT_EVENT,
         BlocEventChannel.simpleListener((_) => incrementCounter()));
-    eventChannel.addEventListener(DECREMENT_EVENT,
+    eventChannel.addBlocEventListener(DECREMENT_EVENT,
         BlocEventChannel.simpleListener((_) => decrementCounter()));
   }
 

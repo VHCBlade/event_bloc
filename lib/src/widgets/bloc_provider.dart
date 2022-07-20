@@ -33,10 +33,10 @@ class BlocProvider<T extends Bloc> extends StatefulWidget {
       context.read<BlocNotifier<T>>().bloc;
 
   @override
-  _BlocProviderState<T> createState() => _BlocProviderState<T>();
+  BlocProviderState<T> createState() => BlocProviderState<T>();
 }
 
-class _BlocProviderState<T extends Bloc> extends State<BlocProvider<T>> {
+class BlocProviderState<T extends Bloc> extends State<BlocProvider<T>> {
   late final T bloc;
 
   @override

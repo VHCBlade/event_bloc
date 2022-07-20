@@ -12,10 +12,10 @@ class RepositoryProvider<T extends Repository> extends StatefulWidget {
       : super(key: key);
 
   @override
-  _RepositoryProviderState<T> createState() => _RepositoryProviderState<T>();
+  RepositoryProviderState<T> createState() => RepositoryProviderState<T>();
 }
 
-class _RepositoryProviderState<T extends Repository>
+class RepositoryProviderState<T extends Repository>
     extends State<RepositoryProvider<T>> {
   late final T repo;
   late final RepositorySource source;

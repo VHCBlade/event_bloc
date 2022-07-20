@@ -1,3 +1,9 @@
+## 2.1.0
+
+* Added BlocEvent<T> for firing events with a specific type.
+* Added addBlocEventListener, removeBlocEventListener, and fireBlocEvent to help with the use of the BlocEvent
+* Updated BlocEventChannel.addEventListener to return the listener that was attached to the event channel.
+
 ## 2.0.0
 
 * Upgraded flutter packages to 3.0.0
