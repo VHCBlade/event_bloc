@@ -10,6 +10,7 @@ void main() {
   group('BlocEvent', () {
     test('Basic', basicCheck);
     test('Remove', removeCheck);
+    test('Multiple', multipleCheck);
   });
 }
 
@@ -55,4 +56,47 @@ void removeCheck() {
 
   channel.fireBlocEvent(void1, null);
   expect(check, 'Cool');
+}
+
+const midEvent = BlocEvent<String>("mid");
+const bottomEvent = BlocEvent<String>("bottom");
+const altEvent = BlocEvent<String>("alt");
+
+void multipleCheck() {
+  final main = BlocEventChannel();
+  final mid = BlocEventChannel(main);
+  final bottom = BlocEventChannel(mid);
+  final alt = BlocEventChannel(main);
+
+  var mainCheck = '';
+  var nonMainCheck = '';
+
+  main.addBlocEventListener<String>(
+      midEvent, BlocEventChannel.simpleListener((val) => mainCheck += val));
+  main.addBlocEventListener<String>(
+      bottomEvent, BlocEventChannel.simpleListener((val) => mainCheck += val));
+  main.addBlocEventListener<String>(
+      altEvent, BlocEventChannel.simpleListener((val) => mainCheck += val));
+  mid.addBlocEventListener<String>(
+      midEvent, BlocEventChannel.simpleListener((val) => nonMainCheck += val));
+  alt.addBlocEventListener<String>(
+      altEvent, BlocEventChannel.simpleListener((val) => nonMainCheck += val));
+  bottom.addBlocEventListener<String>(bottomEvent,
+      BlocEventChannel.simpleListener((val) => nonMainCheck += val));
+
+  mid.fireBlocEvent(midEvent, 'Mid');
+  expect(mainCheck, 'Mid');
+  expect(mainCheck, nonMainCheck);
+  alt.fireBlocEvent(altEvent, 'Alt');
+  expect(mainCheck, 'MidAlt');
+  expect(mainCheck, nonMainCheck);
+  bottom.fireBlocEvent(bottomEvent, 'Bottom');
+  expect(mainCheck, 'MidAltBottom');
+  expect(mainCheck, nonMainCheck);
+
+  mid.addBlocEventListener(bottomEvent,
+      BlocEventChannel.simpleListener((val) => nonMainCheck += '$val'));
+  bottom.fireBlocEvent(bottomEvent, 'Both');
+  expect(mainCheck, 'MidAltBottomBoth');
+  expect(nonMainCheck, 'MidAltBottomBothBoth');
 }
