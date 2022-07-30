@@ -104,7 +104,9 @@ class ExampleRepository extends Repository {
   /// [BlocEventChannel] of all [Repository]s and automatically remove them
   /// when this [Repository] is disposed.
   @override
-  Map<String, BlocEventListener> generateListenerMap() => {};
+  Map<BlocEvent, BlocEventListener> generateListenerMap(
+          BlocEventChannel channel) =>
+      {};
 
   // Define methods that can be used by a Bloc
   Future<void> saveData(int data) async {

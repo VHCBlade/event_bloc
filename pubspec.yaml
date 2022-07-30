@@ -1,6 +1,6 @@
 name: event_bloc
 description: Event Bloc is an event-based implementation of the BLoC pattern, the recommended State Management Pattern for Flutter by Google!
-version: 2.1.0
+version: 3.0.0
 repository: https://github.com/VHCBlade/event_bloc
 
 environment:
@@ -16,6 +16,6 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^1.0.0
+  flutter_lints: ^2.0.1
 
 flutter:

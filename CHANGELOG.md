@@ -1,3 +1,12 @@
+## 3.0.0
+
+* Converted Repository ListenerMap to be responsible for adding the listeners to the [BlocEventChannel]. Will now also use the BlocEvent as the key for the map.
+* Added RefreshQueuer. This allows for easy queueing of asynchronous actions that can potentially be called multiple times. Typically this will be used for refresh actions.
+* Changed Repository to be an abstract class.
+* Added Repository and RefreshQueuer tests.
+* Upgraded Linter to 2.0.1 and updated code to match new rules.
+* Updated License
+
 ## 2.1.0
 
 * Added BlocEvent<T> for firing events with a specific type.

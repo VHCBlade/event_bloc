@@ -24,7 +24,7 @@ void basicCheck() {
   channel.addBlocEventListener(
       string, BlocEventChannel.simpleListener<String>((val) => check += val));
   channel.addBlocEventListener(int1,
-      BlocEventChannel.simpleListener<int>((val) => check = '$val' + check));
+      BlocEventChannel.simpleListener<int>((val) => check = '$val$check'));
 
   channel.fireBlocEvent(void1, null);
   expect(check, 'Cool');
