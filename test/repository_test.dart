@@ -7,9 +7,10 @@ const earth = BlocEvent<bool>("earth");
 const wind = BlocEvent<void>("wind");
 
 void main() {
-  group('RefreshQueuer', () {
+  group('Repository', () {
     test('Basic', basicCheck);
     test('Dispose', disposeCheck);
+    test('Multiple', multipleCheck);
   });
 }
 
@@ -78,6 +79,25 @@ void disposeCheck() {
   expect(val, 10);
   eventChannel.fireBlocEvent<int>(fire, 20);
   expect(val, 10);
+}
+
+void multipleCheck() {
+  var val = 0;
+
+  final eventChannel = BlocEventChannel();
+
+  final repository = TestRepository({
+    fire: BlocEventChannel.simpleListener((add) => val += add as int),
+  });
+
+  repository.initialize(eventChannel);
+
+  eventChannel.fireBlocEvent<int>(fire, 10);
+  expect(val, 10);
+  eventChannel.fireBlocEvent<int>(fire, 20);
+  expect(val, 30);
+  eventChannel.fireBlocEvent<int>(fire, -5);
+  expect(val, 25);
 }
 
 class TestRepository extends Repository {
