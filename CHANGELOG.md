@@ -1,3 +1,8 @@
+## 3.1.0
+
+* Added Constructor for [Bloc] that automatically creates an event channel and makes the passed channel the new channel's parent.
+* Upgraded minimum dart sdk to 2.17.0
+
 ## 3.0.0
 
 * Converted Repository ListenerMap to be responsible for adding the listeners to the [BlocEventChannel]. Will now also use the BlocEvent as the key for the map.

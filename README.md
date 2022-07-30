@@ -40,12 +40,9 @@ const INCREMENT_EVENT = 'increment';
 const RESET_COUNTER_EVENT = 'reset-counter';
 
 class CounterBloc extends Bloc {
-  @override
-  final BlocEventChannel eventChannel;
   int counter = 0;
 
-  CounterBloc({BlocEventChannel? parentChannel})
-      : eventChannel = BlocEventChannel(parentChannel) {
+  CounterBloc({super.parentChannel}) {
     // Add listeners to event channel
     eventChannel.addEventListener(INCREMENT_EVENT,
         BlocEventChannel.simpleListener((_) => incrementCounter()));

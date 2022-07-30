@@ -14,7 +14,10 @@ abstract class Bloc implements Disposable {
   List<void Function()> blocUpdated = [];
 
   /// Events that the UI fire to affect this [Bloc] are received through here.
-  BlocEventChannel get eventChannel;
+  final BlocEventChannel eventChannel;
+
+  Bloc({BlocEventChannel? parentChannel})
+      : eventChannel = BlocEventChannel(parentChannel);
 
   /// Updates the [Bloc] after calling [change] if the value returned by [tracker] changes.
   ///

@@ -60,14 +60,11 @@ class ExampleScreen extends StatelessWidget {
 }
 
 class ExampleBloc extends Bloc {
-  @override
-  final BlocEventChannel eventChannel;
   final ExampleRepository repo;
 
   int counter = 0;
 
-  ExampleBloc({required this.repo, BlocEventChannel? parentChannel})
-      : eventChannel = BlocEventChannel(parentChannel) {
+  ExampleBloc({required this.repo, super.parentChannel}) {
     // this will be called whenever updateBloc is called
     blocUpdated.add(() => repo.saveData(counter));
     // Add event listeners as an alternative to calling the corresponding methods
