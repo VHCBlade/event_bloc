@@ -1,3 +1,8 @@
+## 3.1.1
+
+* Fixed issue where multiple RepositoryProviders without an explicit RepositorySource would lead to only the last Repository being attached to the event channel.
+* Added RepositoryProvider Test
+
 ## 3.1.0
 
 * Added Constructor for [Bloc] that automatically creates an event channel and makes the passed channel the new channel's parent.

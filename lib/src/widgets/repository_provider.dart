@@ -48,7 +48,13 @@ class RepositoryProviderState<T extends Repository>
   Widget build(BuildContext context) {
     final retVal = Provider<T>.value(value: repo, child: widget.child);
     return newSource
-        ? Provider<BlocEventChannel>.value(value: source.channel, child: retVal)
+        ? Provider<BlocEventChannel>.value(
+            value: source.channel,
+            child: Provider<RepositorySource>.value(
+              value: source,
+              child: retVal,
+            ),
+          )
         : retVal;
   }
 }
