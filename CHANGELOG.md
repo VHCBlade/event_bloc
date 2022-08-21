@@ -1,3 +1,7 @@
+## 3.2.0
+
+* Added SingleActionQueuer and ActionQueuer interface
+
 ## 3.1.1
 
 * Fixed issue where multiple RepositoryProviders without an explicit RepositorySource would lead to only the last Repository being attached to the event channel.

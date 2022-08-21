@@ -1,6 +1,5 @@
 import 'package:event_bloc/event_bloc.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../repository_test.dart';

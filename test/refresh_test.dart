@@ -6,6 +6,10 @@ void main() {
     test('Basic', basicCheck);
     test('Delay', delayCheck);
   });
+  group('SingleActionQueuer', () {
+    test('Basic', basicSingleActionCheck);
+    test('Delay', delaySingleActionCheck);
+  });
 }
 
 void basicCheck() async {
@@ -54,4 +58,48 @@ void delayCheck() async {
   queuer.refresh();
   await Future.delayed(const Duration(milliseconds: 10));
   expect(i, 6);
+}
+
+void basicSingleActionCheck() async {
+  int i = 0;
+  final queuer = SingleActionQueuer(() async => i++);
+
+  queuer.queue();
+  await Future.delayed(Duration.zero);
+  expect(i, 1);
+  queuer.queue();
+  await Future.delayed(Duration.zero);
+  expect(i, 1);
+  queuer.queue();
+  await Future.delayed(Duration.zero);
+  expect(i, 1);
+  queuer.queue();
+  await Future.delayed(Duration.zero);
+  expect(i, 1);
+}
+
+void delaySingleActionCheck() async {
+  int i = 0;
+  final queuer = SingleActionQueuer(() async {
+    await Future.delayed(const Duration(milliseconds: 10));
+    i++;
+  });
+
+  queuer.queue();
+  await Future.delayed(const Duration(milliseconds: 5));
+  queuer.queue();
+  queuer.queue();
+  queuer.queue();
+  expect(i, 0);
+  await Future.delayed(const Duration(milliseconds: 5));
+  expect(i, 1);
+  queuer.queue();
+  queuer.queue();
+  queuer.queue();
+  await Future.delayed(const Duration(milliseconds: 5));
+  expect(i, 1);
+  await Future.delayed(const Duration(milliseconds: 5));
+  expect(i, 1);
+  await Future.delayed(const Duration(milliseconds: 5));
+  expect(i, 1);
 }
