@@ -1,3 +1,7 @@
+## 3.3.0
+
+* Added BuildContext extension to add fireEvent method
+
 ## 3.2.0
 
 * Added SingleActionQueuer and ActionQueuer interface

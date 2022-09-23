@@ -3,6 +3,8 @@ import 'package:event_bloc/src/event_bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../event_bloc/event.dart';
+
 /// maps the [Bloc] to the [ChangeNotifier] widget from [Provider]
 class BlocNotifier<T extends Bloc> with ChangeNotifier {
   final T bloc;
@@ -72,5 +74,11 @@ class BlocProviderState<T extends Bloc> extends State<BlocProvider<T>> {
       ],
       child: widget.child,
     );
+  }
+}
+
+extension EventBlocBuildContext on BuildContext {
+  void fireEvent<T>(BlocEvent<T> eventType, T payload) {
+    read<BlocEventChannel>().fireBlocEvent(eventType, payload);
   }
 }
