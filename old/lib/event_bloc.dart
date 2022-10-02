@@ -6,6 +6,8 @@
 /// - [Repository] - Build your Repository Layer with these!
 library event_bloc;
 
-export 'package:event_bloc/src/event_bloc/event.dart';
-export 'package:event_bloc/src/event_bloc/event_channel.dart';
-export 'package:event_bloc/src/event_bloc/refresh.dart';
+export 'package:event_bloc/src/widgets/bloc_provider.dart';
+export 'package:event_bloc/src/widgets/event_channel.dart';
+export 'package:event_bloc/src/widgets/repository_provider.dart';
+
+export 'package:event_bloc/event_bloc_no_widgets.dart';

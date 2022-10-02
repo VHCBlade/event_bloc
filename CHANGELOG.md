@@ -1,3 +1,9 @@
+## 4.0.0
+
+* BREAKING CHANGE: Removed the old String events and replaced them all with the new BlocEventType Object.
+* BREAKING CHANGE: BlocEvent has been renamed to BlocEventType.
+* BREAKING CHANGE: Changed way of preventing propagation of events, to modifying of a provided BlocEvent class, rather than by changing a boolean value that is returned.
+
 ## 3.3.0
 
 * Added BuildContext extension to add fireEvent method
