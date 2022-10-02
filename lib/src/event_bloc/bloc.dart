@@ -16,7 +16,7 @@ abstract class Bloc implements Disposable {
   /// Events that the UI fire to affect this [Bloc] are received through here.
   final BlocEventChannel eventChannel;
 
-  Bloc({BlocEventChannel? parentChannel})
+  Bloc({required BlocEventChannel? parentChannel})
       : eventChannel = BlocEventChannel(parentChannel);
 
   /// Updates the [Bloc] after calling [change] if the value returned by [tracker] changes.

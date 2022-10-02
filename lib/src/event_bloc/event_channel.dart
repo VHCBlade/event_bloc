@@ -39,6 +39,7 @@ class BlocEventListener<T> {
 class BlocEventChannel implements Disposable {
   final BlocEventChannel? _parentChannel;
   final Map<BlocEventType, List<BlocEventListener>> _listeners = {};
+  final List<BlocEventListener> _genericListeners = [];
 
   /// [_parentChannel] is the parent of this channel.
   /// This can only be set in the constructor to ensure that the
@@ -98,6 +99,22 @@ class BlocEventChannel implements Disposable {
     return listener;
   }
 
+  /// Adds a [BlocEventListener] that listens for ALL eventTypes. This is generally
+  /// too generic for most use cases. You should use [addEventListener] with your
+  /// specific [BlocEventType] instead unless you know what you're doing.
+  BlocEventListener addGenericEventListener(
+      BlocEventListenerAction listenerAction) {
+    final listener = BlocEventListener(
+      eventListenerAction: listenerAction,
+      ignoreStopPropagation: true,
+    );
+
+    _genericListeners.add(listener);
+    listener.unsubscribe = () => _genericListeners.remove(listener);
+
+    return listener;
+  }
+
   /// Removes the given [listener] from the given [eventType]. Will do nothing
   /// if [listener] doesn't exist.
   ///
@@ -110,6 +127,15 @@ class BlocEventChannel implements Disposable {
     List<BlocEventListener>? potListeners = _listeners[eventType];
 
     potListeners?.remove(listener);
+  }
+
+  /// Removes the given [listener] from the generic listeners. Will do nothing
+  /// if [listener] doesn't exist.
+  ///
+  /// This is the method you call if you added the listener through
+  /// [addGenericEventListener]. [listener] being the returned value from the function.
+  void removeGenericEventListener<T>(BlocEventListener<T> listener) {
+    _genericListeners.remove(listener);
   }
 
   /// Executes the listeners for the [event] with the given [payload]
@@ -132,6 +158,7 @@ class BlocEventChannel implements Disposable {
   @override
   void dispose() {
     _listeners.clear();
+    _genericListeners.clear();
   }
 }
 

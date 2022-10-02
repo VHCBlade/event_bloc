@@ -1,10 +1,10 @@
-import 'package:event_bloc/event_bloc.dart';
+import 'package:event_bloc/event_bloc_widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../repository_test.dart';
 
-const adder = BlocEvent<int>("adder");
+const adder = BlocEventType<int>("adder");
 
 void main() {
   group('Repository', () {
@@ -24,8 +24,7 @@ Future<void> createWidget(
       child: Builder(
         builder: (context) => CupertinoButton(
           key: const ValueKey("1"),
-          onPressed: () =>
-              BlocEventChannelProvider.of(context).fireBlocEvent(adder, 10),
+          onPressed: () => context.fireEvent(adder, 10),
           child: Container(),
         ),
       ),
@@ -44,7 +43,9 @@ Future<void> basicEventCheck(WidgetTester tester) async {
   await createWidget(
     tester,
     TestRepository(
-        {adder: BlocEventChannel.simpleListener((val) => i += val as int)}),
+      (eventChannel) =>
+          [eventChannel.addEventListener<int>(adder, (_, val) => i += val)],
+    ),
   );
   await fireEvent(tester);
   expect(i, 10);
@@ -58,7 +59,9 @@ Future<void> basicEventCheck(WidgetTester tester) async {
 Future<void> disposeEventCheck(WidgetTester tester) async {
   int i = 0;
   final repository = TestRepository(
-      {adder: BlocEventChannel.simpleListener((val) => i += val as int)});
+    (eventChannel) =>
+        [eventChannel.addEventListener<int>(adder, (_, val) => i += val)],
+  );
   await createWidget(tester, repository);
   await fireEvent(tester);
   expect(i, 10);
@@ -76,15 +79,18 @@ Future<void> multipleEventCheck(WidgetTester tester) async {
   await tester.pumpWidget(
     RepositoryProvider(
       create: (_) => TestRepository(
-          {adder: BlocEventChannel.simpleListener((val) => i += val as int)}),
+        (eventChannel) =>
+            [eventChannel.addEventListener<int>(adder, (_, val) => i += val)],
+      ),
       child: RepositoryProvider(
         create: (_) => TestRepository(
-            {adder: BlocEventChannel.simpleListener((val) => i += val as int)}),
+          (eventChannel) =>
+              [eventChannel.addEventListener<int>(adder, (_, val) => i += val)],
+        ),
         child: Builder(
           builder: (context) => CupertinoButton(
             key: const ValueKey("1"),
-            onPressed: () =>
-                BlocEventChannelProvider.of(context).fireBlocEvent(adder, 10),
+            onPressed: () => context.fireEvent<int>(adder, 10),
             child: Container(),
           ),
         ),

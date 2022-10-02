@@ -3,8 +3,6 @@ import 'package:event_bloc/src/event_bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../event_bloc/event.dart';
-
 /// maps the [Bloc] to the [ChangeNotifier] widget from [Provider]
 class BlocNotifier<T extends Bloc> with ChangeNotifier {
   final T bloc;
@@ -26,13 +24,21 @@ class BlocProvider<T extends Bloc> extends StatefulWidget {
 
   /// Similar to the [BuildContext.watch] method from the Provider package.
   ///
-  /// [Bloc]s normally won't automatically redraw the [Widget] that calls them, unless you specifically watch the [BlocNotifier]. This is helper function to remove the boilerplate of retrieving the [BlocNotifier] and unwrapping it.
+  /// [Bloc]s normally won't automatically redraw the [Widget] that calls them,
+  /// unless you specifically watch the [BlocNotifier]. This is a helper
+  /// function to remove the boilerplate of retrieving the [BlocNotifier] and
+  /// unwrapping it.
   static T watch<T extends Bloc>(BuildContext context) =>
       context.watch<BlocNotifier<T>>().bloc;
 
   /// Similar to the [BuildContext.read] method from the Provider package.
   static T read<T extends Bloc>(BuildContext context) =>
       context.read<BlocNotifier<T>>().bloc;
+
+  /// Similar to the [BuildContext.watch] method from the Provider package.
+  static R select<T extends Bloc, R>(
+          BuildContext context, R Function(T) selector) =>
+      context.select<BlocNotifier<T>, R>((a) => selector(a.bloc));
 
   @override
   BlocProviderState<T> createState() => BlocProviderState<T>();
@@ -74,11 +80,5 @@ class BlocProviderState<T extends Bloc> extends State<BlocProvider<T>> {
       ],
       child: widget.child,
     );
-  }
-}
-
-extension EventBlocBuildContext on BuildContext {
-  void fireEvent<T>(BlocEvent<T> eventType, T payload) {
-    read<BlocEventChannel>().fireBlocEvent(eventType, payload);
   }
 }

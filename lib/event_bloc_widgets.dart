@@ -8,3 +8,7 @@ library event_bloc_widgets;
 // export 'package:event_bloc/src/widgets/repository_provider.dart';
 
 export 'package:event_bloc/event_bloc.dart';
+
+export 'package:event_bloc/src/widget/bloc_provider.dart';
+export 'package:event_bloc/src/widget/context.dart';
+export 'package:event_bloc/src/widget/repository_provider.dart';
