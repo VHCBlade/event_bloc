@@ -1,15 +1,27 @@
-import 'package:event_bloc/event_bloc.dart';
-import 'package:flutter/material.dart';
+import 'package:event_bloc/event_bloc_widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-const INCREMENT_EVENT = 'increment';
+/// It is best practice to place all of your [BlocEventType]s inside an enum such
+/// as this one. This allows you to have an easy place to find all of them.
+///
+/// Perhaps it would be a good idea to have multiple enums based on different
+/// event types.
+///
+/// You can add the type <T> to specify the type that these events will accept.
+enum ExampleEvents<T> {
+  increment<void>(),
+  decrement<void>(),
+  ;
 
-/// You can also make wrap the event name in a [BlocEvent] to automatically enforce the type agreement
-const DECREMENT_EVENT = BlocEvent<void>('decrement');
+  /// Place this function in your event enums to automatically generate the
+  /// [BlocEventType]s from your enum values!
+  BlocEventType<T> get event => BlocEventType<T>("$this");
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -51,8 +63,8 @@ class ExampleScreen extends StatelessWidget {
         ElevatedButton(
             // Alternate way of calling using an event. This doesn't require
             // the bloc, just the event channel.
-            onPressed: () => BlocEventChannelProvider.of(context)
-                .fireBlocEvent<void>(DECREMENT_EVENT, null),
+            onPressed: () =>
+                context.fireEvent<void>(ExampleEvents.decrement.event, null),
             child: const Text('Decrement')),
       ]),
     );
@@ -69,10 +81,10 @@ class ExampleBloc extends Bloc {
     blocUpdated.add(() => repo.saveData(counter));
     // Add event listeners as an alternative to calling the corresponding methods
     // directly.
-    eventChannel.addEventListener(INCREMENT_EVENT,
-        BlocEventChannel.simpleListener((_) => incrementCounter()));
-    eventChannel.addBlocEventListener(DECREMENT_EVENT,
-        BlocEventChannel.simpleListener((_) => decrementCounter()));
+    eventChannel.addEventListener(
+        ExampleEvents.increment.event, (_, a) => incrementCounter());
+    eventChannel.addEventListener(
+        ExampleEvents.decrement.event, (_, a) => decrementCounter());
   }
 
   void incrementCounter() {
@@ -97,13 +109,11 @@ class ExampleBloc extends Bloc {
 }
 
 class ExampleRepository extends Repository {
-  /// [generateListenerMap] is used to add [BlocEventListener]s to the shared
+  /// [generateListeners] is used to add [BlocEventListener]s to the shared
   /// [BlocEventChannel] of all [Repository]s and automatically remove them
   /// when this [Repository] is disposed.
   @override
-  Map<BlocEvent, BlocEventListener> generateListenerMap(
-          BlocEventChannel channel) =>
-      {};
+  List<BlocEventListener> generateListeners(BlocEventChannel channel) => [];
 
   // Define methods that can be used by a Bloc
   Future<void> saveData(int data) async {
