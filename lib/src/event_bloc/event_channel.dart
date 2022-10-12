@@ -41,6 +41,9 @@ class BlocEventChannel implements Disposable {
   final Map<BlocEventType, List<BlocEventListener>> _listeners = {};
   final List<BlocEventListener> _genericListeners = [];
 
+  int get parentCount =>
+      _parentChannel == null ? 0 : 1 + _parentChannel!.parentCount;
+
   /// [_parentChannel] is the parent of this channel.
   /// This can only be set in the constructor to ensure that the
   /// [BlocEventChannel] tree does in fact remain a tree with no cycles.

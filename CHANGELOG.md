@@ -1,3 +1,7 @@
+## 4.0.1
+
+* Added parent count field in BlocEventChannel
+
 ## 4.0.0
 
 * BREAKING CHANGE: Removed the old String events and replaced them all with the new BlocEventType Object.

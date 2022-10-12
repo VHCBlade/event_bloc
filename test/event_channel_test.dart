@@ -10,6 +10,7 @@ void main() {
       test('Stop', stopPropagationCheck);
       test('Ignore', ignoreStopPropagationCheck);
     });
+    test('Parent', parentCountCheck);
   });
 }
 
@@ -199,4 +200,14 @@ void ignoreStopPropagationCheck() {
   bottom.fireEvent(bottomEvent, 'Bottom');
   expect(mainCheck, 'MidBottom');
   expect(nonMainCheck, 'MidMidBottom');
+}
+
+void parentCountCheck() {
+  final main = BlocEventChannel();
+  final mid = BlocEventChannel(main);
+  final bottom = BlocEventChannel(mid);
+
+  expect(bottom.parentCount, 2);
+  expect(mid.parentCount, 1);
+  expect(main.parentCount, 0);
 }
