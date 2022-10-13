@@ -1,3 +1,7 @@
+## 4.1.0
+
+* Removed redundant BuildContext from BuildContext Extension Functions
+
 ## 4.0.1
 
 * Added parent count field in BlocEventChannel

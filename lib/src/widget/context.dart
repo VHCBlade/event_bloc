@@ -19,15 +19,12 @@ extension EventBlocBuildContext on BuildContext {
   /// unless you specifically watch the [BlocNotifier]. This is a helper
   /// function to remove the boilerplate of retrieving the [BlocNotifier] and
   /// unwrapping it.
-  T watchBloc<T extends Bloc>(BuildContext context) =>
-      BlocProvider.watch<T>(context);
+  T watchBloc<T extends Bloc>() => BlocProvider.watch<T>(this);
 
   /// Similar to the [BuildContext.read] method from the Provider package.
-  T readBloc<T extends Bloc>(BuildContext context) =>
-      BlocProvider.read<T>(context);
+  T readBloc<T extends Bloc>() => BlocProvider.read<T>(this);
 
   /// Similar to the [BuildContext.watch] method from the Provider package.
-  R selectBloc<T extends Bloc, R>(
-          BuildContext context, R Function(T) selector) =>
-      BlocProvider.select<T, R>(context, selector);
+  R selectBloc<T extends Bloc, R>(R Function(T) selector) =>
+      BlocProvider.select<T, R>(this, selector);
 }
