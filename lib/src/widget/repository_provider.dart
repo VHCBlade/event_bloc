@@ -1,15 +1,27 @@
-import 'package:event_bloc/event_bloc.dart';
+import 'package:event_bloc/event_bloc_widgets.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 /// Provides a [Repository] down the Widget tree. Will also automatically call necessary functions to initialize the [Repository].
+///
+/// If you wish to reduce the nesting of using multiple [RepositoryProvider]s, look into
+/// using [MultiRepositoryProvider] with some [BlocBuilder]s
 class RepositoryProvider<T extends Repository> extends StatefulWidget {
   final Widget child;
   final T Function(BuildContext) create;
 
-  const RepositoryProvider(
-      {Key? key, required this.child, required this.create})
-      : super(key: key);
+  const RepositoryProvider({
+    Key? key,
+    required this.create,
+    required this.child,
+  }) : super(key: key);
+
+  factory RepositoryProvider.fromBuilder(
+          {required RepositoryBuilder<T> builder, required Widget child}) =>
+      RepositoryProvider(
+        create: (context) => builder.builder(context.asReadable()),
+        child: child,
+      );
 
   @override
   RepositoryProviderState<T> createState() => RepositoryProviderState<T>();

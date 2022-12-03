@@ -1,5 +1,7 @@
+import 'package:event_bloc/src/widget/environment.dart';
 import 'package:event_bloc/src/event_bloc/event_channel.dart';
 import 'package:event_bloc/src/event_bloc/bloc.dart';
+import 'package:event_bloc/src/widget/context.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -15,12 +17,26 @@ class BlocNotifier<T extends Bloc> with ChangeNotifier {
 /// Provides a [Bloc] and will automatically wrap and provide the equivalent [BlocNotifier] and [BlocEventChannel]
 ///
 /// Also provides static functions to get the [Bloc] when provided with the [BuildContext]
+///
+/// If you wish to reduce the nesting of using multiple [BlocProvider]s, look into
+/// using [MultiBlocProvider] with some [BlocBuilder]s
 class BlocProvider<T extends Bloc> extends StatefulWidget {
   final Widget child;
   final T Function(BuildContext, BlocEventChannel?) create;
 
-  const BlocProvider({Key? key, required this.child, required this.create})
-      : super(key: key);
+  const BlocProvider({
+    Key? key,
+    required this.create,
+    required this.child,
+  }) : super(key: key);
+
+  factory BlocProvider.fromBuilder(
+          {required BlocBuilder<T> builder, required Widget child}) =>
+      BlocProvider(
+        create: (context, channel) =>
+            builder.builder(context.asReadable(), channel),
+        child: child,
+      );
 
   /// Similar to the [BuildContext.watch] method from the Provider package.
   ///

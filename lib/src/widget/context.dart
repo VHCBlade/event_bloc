@@ -1,5 +1,4 @@
-import 'package:event_bloc/event_bloc.dart';
-import 'package:event_bloc/src/widget/bloc_provider.dart';
+import 'package:event_bloc/event_bloc_widgets.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -9,6 +8,8 @@ extension EventBlocBuildContext on BuildContext {
   void fireEvent<T>(BlocEventType<T> eventType, T payload) {
     read<BlocEventChannel>().fireEvent(eventType, payload);
   }
+
+  Readable asReadable() => ReadableFromFunc(read);
 
   /// The closest ancestor [BlocEventChannel] in this [BuildContext]
   BlocEventChannel get eventChannel => read<BlocEventChannel>();

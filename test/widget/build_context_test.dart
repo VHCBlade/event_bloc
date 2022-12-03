@@ -2,7 +2,7 @@ import 'package:event_bloc/event_bloc_widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../repository_test.dart';
+import '../test_classes.dart';
 
 const adder = BlocEventType<int>("adder");
 void main() {

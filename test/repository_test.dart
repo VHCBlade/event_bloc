@@ -1,6 +1,8 @@
 import 'package:event_bloc/event_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'test_classes.dart';
+
 const fire = BlocEventType<int>("fire");
 const water = BlocEventType<String>("water");
 const earth = BlocEventType<bool>("earth");
@@ -98,15 +100,4 @@ void multipleCheck() {
   expect(val, 30);
   eventChannel.fireEvent<int>(fire, -5);
   expect(val, 25);
-}
-
-class TestRepository extends Repository {
-  final List<BlocEventListener> Function(BlocEventChannel) listenerGenerator;
-
-  TestRepository(this.listenerGenerator);
-
-  @override
-  List<BlocEventListener> generateListeners(BlocEventChannel channel) {
-    return listenerGenerator(channel);
-  }
 }

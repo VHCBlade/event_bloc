@@ -1,3 +1,9 @@
+## 4.2.0
+
+* Added BlocBuilder and RepositoryBuilder
+* Added constructor for BlocProvider and RepositoryProvider that lets them build out of their respective builders
+* Added MultiBlocProvider and MultiRepositoryProvider that are generated from a List of BlocBuilders and RepositoryBuilders
+
 ## 4.1.0
 
 * Removed redundant BuildContext from BuildContext Extension Functions
