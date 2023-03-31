@@ -1,6 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:event_bloc/src/event_bloc/event_channel.dart';
-import 'package:flutter/material.dart';
+import 'package:meta/meta.dart';
 
 final Function equality = const DeepCollectionEquality().equals;
 

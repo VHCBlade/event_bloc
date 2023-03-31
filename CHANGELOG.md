@@ -1,3 +1,7 @@
+## 4.2.1
+
+* Removed Unnecessary Flutter dependency for must call super (depends on meta instead)
+
 ## 4.2.0
 
 * Added BlocBuilder and RepositoryBuilder

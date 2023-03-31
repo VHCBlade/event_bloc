@@ -1,5 +1,5 @@
 import 'package:event_bloc/event_bloc.dart';
-import 'package:flutter/material.dart';
+import 'package:meta/meta.dart';
 
 /// This is the building block of your [Repository] layer.
 ///
