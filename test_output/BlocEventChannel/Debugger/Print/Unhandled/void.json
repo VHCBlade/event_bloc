@@ -1,0 +1,20 @@
+[
+  "\"[BlocEventChannel] Event - BlocEventType<void>(TestBlocEvent.reloadEvent), Times Handled - 0, Propagating - true, Depth - 1, Value - null\"",
+  "\"[BlocEventChannel] Event - BlocEventType<void>(TestBlocEvent.reloadEvent), Times Handled - 0, Propagating - true, Depth - 1, Value - null\"",
+  "\"[BlocEventChannel] Event - BlocEventType<void>(TestBlocEvent.reloadEvent), Times Handled - 0, Propagating - true, Depth - 1, Value - null\"",
+  "\"[BlocEventChannel] Event - BlocEventType<void>(TestBlocEvent.reloadEvent), Times Handled - 0, Propagating - true, Depth - 2, Value - null\"",
+  "\"[BlocEventChannel] Event - BlocEventType<void>(TestBlocEvent.reloadEvent), Times Handled - 0, Propagating - true, Depth - 2, Value - null\"",
+  "\"[BlocEventChannel] Event - BlocEventType<void>(TestBlocEvent.reloadEvent), Times Handled - 0, Propagating - true, Depth - 2, Value - null\"",
+  "\"[BlocEventChannel] Event - BlocEventType<void>(TestBlocEvent.reloadEvent), Times Handled - 0, Propagating - true, Depth - 3, Value - null\"",
+  "\"[BlocEventChannel] Event - BlocEventType<void>(TestBlocEvent.reloadEvent), Times Handled - 0, Propagating - true, Depth - 3, Value - null\"",
+  "\"[BlocEventChannel] Event - BlocEventType<void>(TestBlocEvent.reloadEvent), Times Handled - 0, Propagating - true, Depth - 2, Value - null\"",
+  "\"[BlocEventChannel] Event - BlocEventType<void>(TestBlocEvent.reloadEvent), Times Handled - 0, Propagating - true, Depth - 2, Value - null\"",
+  "\"[BlocEventChannel] Event - BlocEventType<void>(TestBlocEvent.reloadEvent), Times Handled - 0, Propagating - true, Depth - 2, Value - null\"",
+  "\"[BlocEventChannel] Event - BlocEventType<void>(TestBlocEvent.reloadEvent), Times Handled - 0, Propagating - true, Depth - 3, Value - null\"",
+  "\"[BlocEventChannel] Event - BlocEventType<void>(TestBlocEvent.reloadEvent), Times Handled - 0, Propagating - true, Depth - 3, Value - null\"",
+  "\"[BlocEventChannel] Event - BlocEventType<void>(TestBlocEvent.reloadEvent), Times Handled - 0, Propagating - true, Depth - 2, Value - null\"",
+  "\"[BlocEventChannel] Event - BlocEventType<void>(TestBlocEvent.reloadEvent), Times Handled - 0, Propagating - true, Depth - 2, Value - null\"",
+  "\"[BlocEventChannel] Event - BlocEventType<void>(TestBlocEvent.reloadEvent), Times Handled - 0, Propagating - true, Depth - 2, Value - null\"",
+  "\"[BlocEventChannel] Event - BlocEventType<void>(TestBlocEvent.reloadEvent), Times Handled - 0, Propagating - true, Depth - 3, Value - null\"",
+  "\"[BlocEventChannel] Event - BlocEventType<void>(TestBlocEvent.reloadEvent), Times Handled - 0, Propagating - true, Depth - 3, Value - null\""
+]

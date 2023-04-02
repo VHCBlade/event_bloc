@@ -1,0 +1,20 @@
+[
+  "\"[BlocEventChannel] Event - BlocEventType<bool>(TestBlocEvent.boolEvent), Times Handled - 0, Propagating - true, Depth - 1, Value - true\"",
+  "\"[BlocEventChannel] Event - BlocEventType<bool>(TestBlocEvent.boolEvent), Times Handled - 0, Propagating - true, Depth - 1, Value - true\"",
+  "\"[BlocEventChannel] Event - BlocEventType<bool>(TestBlocEvent.boolEvent), Times Handled - 0, Propagating - true, Depth - 1, Value - true\"",
+  "\"[BlocEventChannel] Event - BlocEventType<bool>(TestBlocEvent.boolEvent), Times Handled - 0, Propagating - true, Depth - 2, Value - true\"",
+  "\"[BlocEventChannel] Event - BlocEventType<bool>(TestBlocEvent.boolEvent), Times Handled - 0, Propagating - true, Depth - 2, Value - true\"",
+  "\"[BlocEventChannel] Event - BlocEventType<bool>(TestBlocEvent.boolEvent), Times Handled - 0, Propagating - true, Depth - 2, Value - true\"",
+  "\"[BlocEventChannel] Event - BlocEventType<bool>(TestBlocEvent.boolEvent), Times Handled - 0, Propagating - true, Depth - 3, Value - true\"",
+  "\"[BlocEventChannel] Event - BlocEventType<bool>(TestBlocEvent.boolEvent), Times Handled - 0, Propagating - true, Depth - 3, Value - true\"",
+  "\"[BlocEventChannel] Event - BlocEventType<bool>(TestBlocEvent.boolEvent), Times Handled - 0, Propagating - true, Depth - 2, Value - true\"",
+  "\"[BlocEventChannel] Event - BlocEventType<bool>(TestBlocEvent.boolEvent), Times Handled - 0, Propagating - true, Depth - 2, Value - true\"",
+  "\"[BlocEventChannel] Event - BlocEventType<bool>(TestBlocEvent.boolEvent), Times Handled - 0, Propagating - true, Depth - 2, Value - true\"",
+  "\"[BlocEventChannel] Event - BlocEventType<bool>(TestBlocEvent.boolEvent), Times Handled - 0, Propagating - true, Depth - 3, Value - true\"",
+  "\"[BlocEventChannel] Event - BlocEventType<bool>(TestBlocEvent.boolEvent), Times Handled - 0, Propagating - true, Depth - 3, Value - true\"",
+  "\"[BlocEventChannel] Event - BlocEventType<bool>(TestBlocEvent.boolEvent), Times Handled - 0, Propagating - true, Depth - 2, Value - true\"",
+  "\"[BlocEventChannel] Event - BlocEventType<bool>(TestBlocEvent.boolEvent), Times Handled - 0, Propagating - true, Depth - 2, Value - true\"",
+  "\"[BlocEventChannel] Event - BlocEventType<bool>(TestBlocEvent.boolEvent), Times Handled - 0, Propagating - true, Depth - 2, Value - true\"",
+  "\"[BlocEventChannel] Event - BlocEventType<bool>(TestBlocEvent.boolEvent), Times Handled - 0, Propagating - true, Depth - 3, Value - true\"",
+  "\"[BlocEventChannel] Event - BlocEventType<bool>(TestBlocEvent.boolEvent), Times Handled - 0, Propagating - true, Depth - 3, Value - true\""
+]

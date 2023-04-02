@@ -1,0 +1,14 @@
+[
+  "\"[BlocEventChannel] Event - BlocEventType<int>(TestBlocEvent.intEvent), Times Handled - 0, Propagating - true, Depth - 1, Value - 1\"",
+  "\"[BlocEventChannel] Event - BlocEventType<int>(TestBlocEvent.intEvent), Times Handled - 0, Propagating - true, Depth - 1, Value - 1\"",
+  "\"[BlocEventChannel] Event - BlocEventType<int>(TestBlocEvent.intEvent), Times Handled - 0, Propagating - true, Depth - 1, Value - 1\"",
+  "\"[BlocEventChannel] Event - BlocEventType<int>(TestBlocEvent.intEvent), Times Handled - 0, Propagating - true, Depth - 2, Value - 1\"",
+  "\"[BlocEventChannel] Event - BlocEventType<int>(TestBlocEvent.intEvent), Times Handled - 0, Propagating - true, Depth - 2, Value - 1\"",
+  "\"[BlocEventChannel] Event - BlocEventType<int>(TestBlocEvent.intEvent), Times Handled - 0, Propagating - true, Depth - 2, Value - 1\"",
+  "\"[BlocEventChannel] Event - BlocEventType<int>(TestBlocEvent.intEvent), Times Handled - 0, Propagating - true, Depth - 2, Value - 1\"",
+  "\"[BlocEventChannel] Event - BlocEventType<int>(TestBlocEvent.intEvent), Times Handled - 0, Propagating - true, Depth - 2, Value - 1\"",
+  "\"[BlocEventChannel] Event - BlocEventType<int>(TestBlocEvent.intEvent), Times Handled - 0, Propagating - true, Depth - 2, Value - 1\"",
+  "\"[BlocEventChannel] Event - BlocEventType<int>(TestBlocEvent.intEvent), Times Handled - 0, Propagating - true, Depth - 2, Value - 1\"",
+  "\"[BlocEventChannel] Event - BlocEventType<int>(TestBlocEvent.intEvent), Times Handled - 0, Propagating - true, Depth - 2, Value - 1\"",
+  "\"[BlocEventChannel] Event - BlocEventType<int>(TestBlocEvent.intEvent), Times Handled - 0, Propagating - true, Depth - 2, Value - 1\""
+]

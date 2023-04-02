@@ -14,6 +14,7 @@ class BlocEvent<T> {
   final BlocEventType<T> eventType;
   bool propagate = true;
   int timesHandled = 0;
+  int depth = 0;
 
   BlocEvent(this.eventType);
 }

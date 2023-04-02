@@ -6,7 +6,9 @@ class BlocEventChannelDebugger {
   final String name;
   final bool printUnhandled;
   final bool printHandled;
-  final BlocEventListenerAction? printFunction;
+  final Function(
+          BlocEvent event, dynamic value, String Function() defaultMessage)?
+      printFunction;
 
   BlocEventChannelDebugger({
     BlocEventChannel? parentChannel,
@@ -24,16 +26,17 @@ class BlocEventChannelDebugger {
     if (shouldPrint) {
       printFunction == null
           ? defaultPrint(event, value)
-          : printFunction!(event, value);
+          : printFunction!(
+              event, value, () => createPrintMessage(event, value));
     }
   }
 
   void defaultPrint(BlocEvent event, dynamic value) {
     if (kDebugMode) {
-      print("$name Times Handled - ${event.timesHandled}");
+      print(createPrintMessage(event, value));
     }
   }
 
-  String printMessage(BlocEvent event, dynamic value) =>
-      "$name Times Handled - ${event.timesHandled}";
+  String createPrintMessage(BlocEvent event, dynamic value) =>
+      "$name Event - ${event.eventType}, Times Handled - ${event.timesHandled}, Propagating - ${event.propagate}, Depth - ${event.depth}, Value - $value";
 }

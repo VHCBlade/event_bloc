@@ -153,6 +153,7 @@ class BlocEventChannel implements Disposable {
     if (allListener != null) {
       allListener!(event, payload);
     }
+    event.depth++;
 
     List<BlocEventListener<T>>? potListeners =
         _listeners[event.eventType] as List<BlocEventListener<T>>?;
