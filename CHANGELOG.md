@@ -1,3 +1,7 @@
+## 4.3.2
+
+* Changed default BlocEventChannelDebugger in RepositorySource to print unhandled events.
+
 ## 4.3.1
 
 * Added BlocEventChannelDebugger and BlocEventChannelDebuggerProvider, to help debug your event channels!

@@ -43,7 +43,7 @@ class RepositorySource implements Disposable {
     this.debugger = debugger ??
         BlocEventChannelDebugger(
           printHandled: false,
-          printUnhandled: false,
+          printUnhandled: true,
         );
   }
 
