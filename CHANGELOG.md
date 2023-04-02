@@ -4,6 +4,7 @@
 * Added allListener instantiation variable to BlocEventChannel to listen for all event regardless of type.
 * Added names to BlocEventListenerAction, CreateBloc, CreateRepository typedefs to help the linter give a more meaningful lambda.
 * Added depth and timesHandled to BlocEvent
+* Changed RepositoryChannel debugChannel to be backed by a BlocEventChannelDebugger instead.
 
 ## 4.2.1
 

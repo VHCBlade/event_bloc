@@ -37,17 +37,28 @@ abstract class Repository implements Disposable {
 /// This will automatically be provided if one doesn't already exist in the
 /// Widget tree when a [RepositoryProvider] generates a [Repository]
 class RepositorySource implements Disposable {
+  late final BlocEventChannelDebugger debugger;
+
+  RepositorySource([BlocEventChannelDebugger? debugger]) {
+    this.debugger = debugger ??
+        BlocEventChannelDebugger(
+          printHandled: false,
+          printUnhandled: false,
+        );
+  }
+
   /// This is the [BlocEventChannel] that is used to help debug the events that
   /// run through the all the [BlocEventChannel]s
-  final BlocEventChannel debugChannel = BlocEventChannel();
+  BlocEventChannel get debugChannel => debugger.eventChannel;
 
   /// This is the [BlocEventChannel] that will be used by all of the
   /// [Repository]s
-  late final BlocEventChannel channel = BlocEventChannel(debugChannel);
+  late final BlocEventChannel channel = BlocEventChannel(debugger.eventChannel);
 
   @override
   @mustCallSuper
   void dispose() {
+    debugChannel.dispose();
     channel.dispose();
   }
 }

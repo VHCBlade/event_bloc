@@ -30,8 +30,8 @@ void unhandledTest() {
   final tester = SerializableListTester<Tuple2<BlocEventType, dynamic>>(
     testGroupName: "BlocEventChannel Debugger Print",
     mainTestName: "Unhandled",
-    mode: ListTesterMode.generateOutput,
-    // mode: ListTesterMode.testOutput,
+    // mode: ListTesterMode.generateOutput,
+    mode: ListTesterMode.testOutput,
     testFunction: (value, tester) {
       final debugger = BlocEventChannelDebugger(
           printUnhandled: true,
@@ -50,8 +50,8 @@ void handledTest() {
   final tester = SerializableListTester<Tuple2<BlocEventType, dynamic>>(
     testGroupName: "BlocEventChannel Debugger Print",
     mainTestName: "Handled",
-    mode: ListTesterMode.generateOutput,
-    // mode: ListTesterMode.testOutput,
+    // mode: ListTesterMode.generateOutput,
+    mode: ListTesterMode.testOutput,
     testFunction: (value, tester) {
       final debugger = BlocEventChannelDebugger(
           printUnhandled: false,
@@ -70,8 +70,8 @@ void everythingTest() {
   final tester = SerializableListTester<Tuple2<BlocEventType, dynamic>>(
     testGroupName: "BlocEventChannel Debugger Print",
     mainTestName: "Everything",
-    mode: ListTesterMode.generateOutput,
-    // mode: ListTesterMode.testOutput,
+    // mode: ListTesterMode.generateOutput,
+    mode: ListTesterMode.testOutput,
     testFunction: (value, tester) {
       final debugger = BlocEventChannelDebugger(
           printUnhandled: true,
@@ -90,8 +90,8 @@ void renamedTest() {
   final tester = SerializableListTester<Tuple2<BlocEventType, dynamic>>(
     testGroupName: "BlocEventChannel Debugger Print",
     mainTestName: "Renamed Everything",
-    mode: ListTesterMode.generateOutput,
-    // mode: ListTesterMode.testOutput,
+    // mode: ListTesterMode.generateOutput,
+    mode: ListTesterMode.testOutput,
     testFunction: (value, tester) {
       final debugger = BlocEventChannelDebugger(
           name: "[This is Epic!]",
