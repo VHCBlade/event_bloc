@@ -1,4 +1,4 @@
-## 4.3.0
+## 4.3.1
 
 * Added BlocEventChannelDebugger and BlocEventChannelDebuggerProvider, to help debug your event channels!
 * Added allListener instantiation variable to BlocEventChannel to listen for all event regardless of type.

@@ -8,5 +8,6 @@ export 'package:event_bloc/event_bloc.dart';
 export 'package:event_bloc/src/widget/bloc_provider.dart';
 export 'package:event_bloc/src/widget/context.dart';
 export 'package:event_bloc/src/widget/environment.dart';
+export 'package:event_bloc/src/widget/debugger.dart';
 export 'package:event_bloc/src/widget/multi_provider.dart';
 export 'package:event_bloc/src/widget/repository_provider.dart';
