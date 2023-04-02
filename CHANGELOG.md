@@ -1,3 +1,9 @@
+## 4.3.0
+
+* Added BlocEventChannelDebugger and BlocEventChannelDebuggerProvider, to help debug your event channels!
+* Added allListener instantiation variable to BlocEventChannel to listen for all event regardless of type.
+* Added names to BlocEventListenerAction, CreateBloc, CreateRepository typedefs to help the linter give a more meaningful lambda.
+
 ## 4.2.1
 
 * Removed Unnecessary Flutter dependency for must call super (depends on meta instead)

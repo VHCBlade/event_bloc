@@ -13,6 +13,7 @@ class BlocEventType<T> extends Equatable {
 class BlocEvent<T> {
   final BlocEventType<T> eventType;
   bool propagate = true;
+  int timesHandled = 0;
 
   BlocEvent(this.eventType);
 }

@@ -1,7 +1,7 @@
 import 'package:event_bloc/src/event_bloc/event.dart';
 
 /// Event Listener
-typedef BlocEventListenerAction<T> = void Function(BlocEvent<T>, T);
+typedef BlocEventListenerAction<T> = void Function(BlocEvent<T> event, T value);
 
 class BlocEventListener<T> {
   final BlocEventListenerAction<T> eventListenerAction;
@@ -40,6 +40,7 @@ class BlocEventChannel implements Disposable {
   final BlocEventChannel? _parentChannel;
   final Map<BlocEventType, List<BlocEventListener>> _listeners = {};
   final List<BlocEventListener> _genericListeners = [];
+  final BlocEventListenerAction? allListener;
 
   int get parentCount =>
       _parentChannel == null ? 0 : 1 + _parentChannel!.parentCount;
@@ -47,7 +48,10 @@ class BlocEventChannel implements Disposable {
   /// [_parentChannel] is the parent of this channel.
   /// This can only be set in the constructor to ensure that the
   /// [BlocEventChannel] tree does in fact remain a tree with no cycles.
-  BlocEventChannel([this._parentChannel]);
+  ///
+  /// [allListener] is called for every single event that passed through this event channel.
+  /// Regardless of the type of the event. This should mostly be used for debugging.
+  BlocEventChannel([this._parentChannel, this.allListener]);
 
   /// Fires an event that is sent up the event channel, stopping only
   /// when it reaches the top or an event stops the propagation.
@@ -146,6 +150,10 @@ class BlocEventChannel implements Disposable {
   /// The event listeners will modify the [event] and possibly change how the
   /// [event] is handled further up the event channel tree.
   void _listenForEvent<T>(BlocEvent<T> event, T payload) {
+    if (allListener != null) {
+      allListener!(event, payload);
+    }
+
     List<BlocEventListener<T>>? potListeners =
         _listeners[event.eventType] as List<BlocEventListener<T>>?;
 
@@ -155,7 +163,10 @@ class BlocEventChannel implements Disposable {
 
     potListeners
         .where((listener) => event.propagate || listener.ignoreStopPropagation)
-        .forEach((listener) => listener.eventListenerAction(event, payload));
+        .forEach((listener) {
+      event.timesHandled++;
+      listener.eventListenerAction(event, payload);
+    });
   }
 
   @override

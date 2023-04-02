@@ -1,8 +1,9 @@
 import 'package:event_bloc/event_bloc_widgets.dart';
 import 'package:flutter/widgets.dart';
 
-typedef CreateBloc<T extends Bloc> = T Function(Readable, BlocEventChannel?);
-typedef CreateRepository<T extends Repository> = T Function(Readable);
+typedef CreateBloc<T extends Bloc> = T Function(
+    Readable reader, BlocEventChannel? parentChannel);
+typedef CreateRepository<T extends Repository> = T Function(Readable reader);
 
 abstract class Readable {
   T read<T>();
