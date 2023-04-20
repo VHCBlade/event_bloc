@@ -1,3 +1,7 @@
+## 4.3.3
+
+* Removed Flutter dependence in BlocEventChannelDebugger
+
 ## 4.3.2
 
 * Changed default BlocEventChannelDebugger in RepositorySource to print unhandled events.

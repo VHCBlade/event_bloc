@@ -1,5 +1,4 @@
 import 'package:event_bloc/event_bloc.dart';
-import 'package:flutter/foundation.dart';
 
 class BlocEventChannelDebugger {
   late final BlocEventChannel eventChannel;
@@ -32,9 +31,8 @@ class BlocEventChannelDebugger {
   }
 
   void defaultPrint(BlocEvent event, dynamic value) {
-    if (kDebugMode) {
-      print(createPrintMessage(event, value));
-    }
+    // ignore: avoid_print
+    print(createPrintMessage(event, value));
   }
 
   String createPrintMessage(BlocEvent event, dynamic value) =>
