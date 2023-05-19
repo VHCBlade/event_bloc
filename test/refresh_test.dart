@@ -83,23 +83,23 @@ Future<void> basicSingleActionCheck() async {
 }
 
 Future<void> delaySingleActionCheck() async {
-  int i = 0;
+  var i = 0;
   final queuer = SingleActionQueuer(() async {
     await Future.delayed(const Duration(milliseconds: 10));
     i++;
   });
 
-  queuer.queue();
+  unawaited(queuer.queue());
   await Future.delayed(const Duration(milliseconds: 5));
-  queuer.queue();
-  queuer.queue();
-  queuer.queue();
+  unawaited(queuer.queue());
+  unawaited(queuer.queue());
+  unawaited(queuer.queue());
   expect(i, 0);
   await Future.delayed(const Duration(milliseconds: 5));
   expect(i, 1);
-  queuer.queue();
-  queuer.queue();
-  queuer.queue();
+  unawaited(queuer.queue());
+  unawaited(queuer.queue());
+  unawaited(queuer.queue());
   await Future.delayed(const Duration(milliseconds: 5));
   expect(i, 1);
   await Future.delayed(const Duration(milliseconds: 5));
