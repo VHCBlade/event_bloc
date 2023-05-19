@@ -2,32 +2,40 @@ import 'package:event_bloc/event_bloc_widgets.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-/// Provides a [Repository] down the Widget tree. Will also automatically call necessary functions to initialize the [Repository].
+/// Provides a [Repository] down the Widget tree. Will also automatically call
+/// necessary functions to initialize the [Repository].
 ///
-/// If you wish to reduce the nesting of using multiple [RepositoryProvider]s, look into
-/// using [MultiRepositoryProvider] with some [BlocBuilder]s
+/// If you wish to reduce the nesting of using multiple [RepositoryProvider]s,
+/// look into using [MultiRepositoryProvider] with some [BlocBuilder]s
 class RepositoryProvider<T extends Repository> extends StatefulWidget {
-  final Widget child;
-  final T Function(BuildContext) create;
-
+  /// [create] shows how the repository will instantiated.
   const RepositoryProvider({
-    Key? key,
     required this.create,
     required this.child,
-  }) : super(key: key);
+    super.key,
+  });
 
-  factory RepositoryProvider.fromBuilder(
-          {required RepositoryBuilder<T> builder, required Widget child}) =>
+  /// [builder] shows how the repository will be instantiated.
+  factory RepositoryProvider.fromBuilder({
+    required RepositoryBuilder<T> builder,
+    required Widget child,
+  }) =>
       RepositoryProvider(
         create: (context) => builder.builder(context.asReadable()),
         child: child,
       );
 
+  /// The child that the [Repository] will be provided to.
+  final Widget child;
+
+  /// Shows how the repository will instantiated.
+  final T Function(BuildContext) create;
+
   @override
-  RepositoryProviderState<T> createState() => RepositoryProviderState<T>();
+  State<RepositoryProvider<T>> createState() => _RepositoryProviderState<T>();
 }
 
-class RepositoryProviderState<T extends Repository>
+class _RepositoryProviderState<T extends Repository>
     extends State<RepositoryProvider<T>> {
   late final T repo;
   late final RepositorySource source;

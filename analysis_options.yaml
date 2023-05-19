@@ -1,6 +1,11 @@
-include: package:flutter_lints/flutter.yaml
+include: package:very_good_analysis/analysis_options.4.0.0.yaml
+analyzer:
+  exclude:
+    - build/**
 
 linter:
   rules:
-    avoid_function_literals_in_foreach_calls: false
+    no_default_cases: false
+    avoid_redundant_argument_values: false
     constant_identifier_names: false
+    avoid_function_literals_in_foreach_calls: false

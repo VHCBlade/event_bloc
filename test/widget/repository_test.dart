@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import '../test_classes.dart';
 
-const adder = BlocEventType<int>("adder");
+const adder = BlocEventType<int>('adder');
 
 void main() {
   group('Repository', () {
@@ -17,13 +17,15 @@ void main() {
 }
 
 Future<void> createWidget(
-    WidgetTester tester, TestRepository repository) async {
+  WidgetTester tester,
+  TestRepository repository,
+) async {
   await tester.pumpWidget(
     RepositoryProvider(
       create: (_) => repository,
       child: Builder(
         builder: (context) => CupertinoButton(
-          key: const ValueKey("1"),
+          key: const ValueKey('1'),
           onPressed: () => context.fireEvent(adder, 10),
           child: Container(),
         ),
@@ -34,12 +36,12 @@ Future<void> createWidget(
 }
 
 Future<void> fireEvent(WidgetTester tester) async {
-  await tester.tap(find.byKey(const ValueKey("1")));
+  await tester.tap(find.byKey(const ValueKey('1')));
   await tester.pumpAndSettle();
 }
 
 Future<void> basicEventCheck(WidgetTester tester) async {
-  int i = 0;
+  var i = 0;
   await createWidget(
     tester,
     TestRepository(
@@ -57,7 +59,7 @@ Future<void> basicEventCheck(WidgetTester tester) async {
 }
 
 Future<void> disposeEventCheck(WidgetTester tester) async {
-  int i = 0;
+  var i = 0;
   final repository = TestRepository(
     (eventChannel) =>
         [eventChannel.addEventListener<int>(adder, (_, val) => i += val)],
@@ -75,7 +77,7 @@ Future<void> disposeEventCheck(WidgetTester tester) async {
 }
 
 Future<void> multipleEventCheck(WidgetTester tester) async {
-  int i = 0;
+  var i = 0;
   await tester.pumpWidget(
     RepositoryProvider(
       create: (_) => TestRepository(
@@ -89,7 +91,7 @@ Future<void> multipleEventCheck(WidgetTester tester) async {
         ),
         child: Builder(
           builder: (context) => CupertinoButton(
-            key: const ValueKey("1"),
+            key: const ValueKey('1'),
             onPressed: () => context.fireEvent<int>(adder, 10),
             child: Container(),
           ),

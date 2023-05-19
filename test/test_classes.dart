@@ -7,76 +7,100 @@ enum TestBlocEvent<T> {
   reloadEvent<void>(),
   ;
 
-  BlocEventType<T> get event => BlocEventType<T>("$this");
+  BlocEventType<T> get event => BlocEventType<T>('$this');
 }
 
 class TestRepository extends Repository {
-  final List<BlocEventListener> Function(BlocEventChannel) listenerGenerator;
-
   TestRepository(this.listenerGenerator);
 
   factory TestRepository.fromSetter(void Function(dynamic val) set) {
     return TestRepository(
       (channel) => [
         channel.addEventListener<int>(
-            TestBlocEvent.intEvent.event, (_, newVal) => set(newVal)),
+          TestBlocEvent.intEvent.event,
+          (_, newVal) => set(newVal),
+        ),
         channel.addEventListener<String>(
-            TestBlocEvent.stringEvent.event, (_, newVal) => set(newVal)),
+          TestBlocEvent.stringEvent.event,
+          (_, newVal) => set(newVal),
+        ),
         channel.addEventListener<bool>(
-            TestBlocEvent.boolEvent.event, (_, newVal) => set(newVal)),
+          TestBlocEvent.boolEvent.event,
+          (_, newVal) => set(newVal),
+        ),
         channel.addEventListener<void>(
-            TestBlocEvent.reloadEvent.event, (_, newVal) => set(null)),
+          TestBlocEvent.reloadEvent.event,
+          (_, newVal) => set(null),
+        ),
       ],
     );
   }
+  final List<BlocEventListener<dynamic>> Function(BlocEventChannel)
+      listenerGenerator;
 
   @override
-  List<BlocEventListener> generateListeners(BlocEventChannel channel) {
+  List<BlocEventListener<dynamic>> generateListeners(BlocEventChannel channel) {
     return listenerGenerator(channel);
   }
 }
 
 class TestBloc extends Bloc {
-  final List<BlocEventListener> Function(BlocEventChannel) listenerGenerator;
+  TestBloc(this.listenerGenerator, {required super.parentChannel}) {
+    listenerGenerator(eventChannel);
+  }
 
   factory TestBloc.fromSetter(
-      void Function(dynamic val) set, BlocEventChannel? parentChannel) {
+    void Function(dynamic val) set,
+    BlocEventChannel? parentChannel,
+  ) {
     return TestBloc(
       (channel) => [
         channel.addEventListener<int>(
-            TestBlocEvent.intEvent.event, (_, newVal) => set(newVal)),
+          TestBlocEvent.intEvent.event,
+          (_, newVal) => set(newVal),
+        ),
         channel.addEventListener<String>(
-            TestBlocEvent.stringEvent.event, (_, newVal) => set(newVal)),
+          TestBlocEvent.stringEvent.event,
+          (_, newVal) => set(newVal),
+        ),
         channel.addEventListener<bool>(
-            TestBlocEvent.boolEvent.event, (_, newVal) => set(newVal)),
+          TestBlocEvent.boolEvent.event,
+          (_, newVal) => set(newVal),
+        ),
         channel.addEventListener<void>(
-            TestBlocEvent.reloadEvent.event, (_, newVal) => set(null)),
+          TestBlocEvent.reloadEvent.event,
+          (_, newVal) => set(null),
+        ),
       ],
       parentChannel: parentChannel,
     );
   }
-
-  TestBloc(this.listenerGenerator, {required super.parentChannel}) {
-    listenerGenerator(eventChannel);
-  }
+  final List<BlocEventListener<dynamic>> Function(BlocEventChannel)
+      listenerGenerator;
 }
 
 class DependedTestRepository extends Repository {
-  String value = "";
+  String value = '';
 
   @override
-  List<BlocEventListener> generateListeners(BlocEventChannel channel) => [
+  List<BlocEventListener<dynamic>> generateListeners(
+    BlocEventChannel channel,
+  ) =>
+      [
         channel.addEventListener<String>(
-            TestBlocEvent.stringEvent.event, (_, val) => value = val)
+          TestBlocEvent.stringEvent.event,
+          (_, val) => value = val,
+        )
       ];
 }
 
 class DependentTestBloc extends Bloc {
-  final DependedTestRepository repository;
-  String? value;
-
   DependentTestBloc({required super.parentChannel, required this.repository}) {
     eventChannel.addEventListener(
-        TestBlocEvent.reloadEvent.event, (_, val) => value = repository.value);
+      TestBlocEvent.reloadEvent.event,
+      (_, val) => value = repository.value,
+    );
   }
+  final DependedTestRepository repository;
+  String? value;
 }

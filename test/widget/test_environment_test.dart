@@ -29,21 +29,19 @@ void dependencyCheck() {
         (readable) => DependedTestRepository(),
       ),
     ],
-  );
+  )..initialize();
 
-  env.initialize();
-
-  env.eventChannel.fireEvent(TestBlocEvent.stringEvent.event, "cool");
-  expect(env.read<DependedTestRepository>().value, "cool");
-  expect(repositoryVal, "cool");
+  env.eventChannel.fireEvent(TestBlocEvent.stringEvent.event, 'cool');
+  expect(env.read<DependedTestRepository>().value, 'cool');
+  expect(repositoryVal, 'cool');
   expect(env.read<Repository>(), isA<TestRepository>());
   expect(env.read<DependentTestBloc>().value, null);
 
   env.eventChannel.fireEvent(TestBlocEvent.reloadEvent.event, null);
-  expect(env.read<DependedTestRepository>().value, "cool");
+  expect(env.read<DependedTestRepository>().value, 'cool');
   expect(repositoryVal, null);
   expect(env.read<Repository>(), isA<TestRepository>());
-  expect(env.read<DependentTestBloc>().value, "cool");
+  expect(env.read<DependentTestBloc>().value, 'cool');
 }
 
 void basicCheck() {
@@ -61,17 +59,15 @@ void basicCheck() {
         (readable) => TestRepository.fromSetter((val) => repositoryVal = val),
       ),
     ],
-  );
-
-  env.initialize();
+  )..initialize();
 
   env.eventChannel.fireEvent(TestBlocEvent.intEvent.event, 1);
   expect(blocVal, 1);
   expect(repositoryVal, 1);
 
-  env.eventChannel.fireEvent(TestBlocEvent.stringEvent.event, "cool");
-  expect(blocVal, "cool");
-  expect(repositoryVal, "cool");
+  env.eventChannel.fireEvent(TestBlocEvent.stringEvent.event, 'cool');
+  expect(blocVal, 'cool');
+  expect(repositoryVal, 'cool');
 
   env.eventChannel.fireEvent(TestBlocEvent.reloadEvent.event, null);
   expect(blocVal, null);
@@ -83,7 +79,7 @@ void basicCheck() {
 
   env.dispose();
 
-  env.eventChannel.fireEvent(TestBlocEvent.stringEvent.event, "cool");
+  env.eventChannel.fireEvent(TestBlocEvent.stringEvent.event, 'cool');
   expect(blocVal, null);
   expect(repositoryVal, false);
 }

@@ -14,19 +14,18 @@ void main() {
   });
 }
 
-const cool = BlocEventType<String>("Cool");
-const listener = BlocEventType<String>("Listener");
-const intense = BlocEventType<String>("Intense");
+const cool = BlocEventType<String>('Cool');
+const listener = BlocEventType<String>('Listener');
+const intense = BlocEventType<String>('Intense');
 
 void basicCheck() {
   final channel = BlocEventChannel();
   var check = '';
 
-  channel.addEventListener(cool, (_, a) => check += 'Cool');
-
-  channel.addEventListener(listener, (_, val) => check += '$val');
-
-  channel.fireEvent(cool, null);
+  channel
+    ..addEventListener(cool, (_, a) => check += 'Cool')
+    ..addEventListener(listener, (_, val) => check += '$val')
+    ..fireEvent(cool, null);
   expect(check, 'Cool');
   channel.fireEvent(listener, null);
   expect(check, 'Coolnull');
@@ -38,9 +37,9 @@ void basicCheck() {
   expect(check, 'CoolnullmegaCool');
 }
 
-const midEvent = BlocEventType<String>("Mid");
-const bottomEvent = BlocEventType<String>("Bottom");
-const altEvent = BlocEventType<String>("Alt");
+const midEvent = BlocEventType<String>('Mid');
+const bottomEvent = BlocEventType<String>('Bottom');
+const altEvent = BlocEventType<String>('Alt');
 
 void multipleCheck() {
   final main = BlocEventChannel();
@@ -51,9 +50,10 @@ void multipleCheck() {
   var mainCheck = '';
   var nonMainCheck = '';
 
-  main.addEventListener<String>(midEvent, (_, val) => mainCheck += val);
-  main.addEventListener<String>(bottomEvent, (_, val) => mainCheck += val);
-  main.addEventListener<String>(altEvent, (_, val) => mainCheck += val);
+  main
+    ..addEventListener<String>(midEvent, (_, val) => mainCheck += val)
+    ..addEventListener<String>(bottomEvent, (_, val) => mainCheck += val)
+    ..addEventListener<String>(altEvent, (_, val) => mainCheck += val);
   mid.addEventListener<String>(midEvent, (_, val) => nonMainCheck += val);
   alt.addEventListener<String>(altEvent, (_, val) => nonMainCheck += val);
   bottom.addEventListener<String>(bottomEvent, (_, val) => nonMainCheck += val);
@@ -84,8 +84,9 @@ void removeCheck() {
   channel.fireEvent(cool, null);
   expect(check, 3);
 
-  channel.removeEventListener(cool, doubleCheck);
-  channel.fireEvent(cool, null);
+  channel
+    ..removeEventListener(cool, doubleCheck)
+    ..fireEvent(cool, null);
   expect(check, 4);
 
   final tripleCheck = channel.addEventListener(cool, (_, a) => check += 3);
@@ -96,17 +97,20 @@ void removeCheck() {
   channel.fireEvent(cool, null);
   expect(check, 9);
 
-  channel.dispose();
-  channel.fireEvent(cool, null);
+  channel
+    ..dispose()
+    ..fireEvent(cool, null);
   expect(check, 9);
 
-  channel.addEventListener(cool, doubleCheck.eventListenerAction);
-  channel.addEventListener(cool, doubleCheck.eventListenerAction);
-  channel.fireEvent(cool, null);
+  channel
+    ..addEventListener(cool, doubleCheck.eventListenerAction)
+    ..addEventListener(cool, doubleCheck.eventListenerAction)
+    ..fireEvent(cool, null);
   expect(check, 13);
 
-  channel.dispose();
-  channel.fireEvent(cool, null);
+  channel
+    ..dispose()
+    ..fireEvent(cool, null);
   expect(check, 13);
 }
 
@@ -118,8 +122,9 @@ void stopPropagationCheck() {
   var mainCheck = '';
   var nonMainCheck = '';
 
-  main.addEventListener<String>(midEvent, (_, val) => mainCheck += val);
-  main.addEventListener<String>(bottomEvent, (_, val) => mainCheck += val);
+  main
+    ..addEventListener<String>(midEvent, (_, val) => mainCheck += val)
+    ..addEventListener<String>(bottomEvent, (_, val) => mainCheck += val);
 
   mid.fireEvent(midEvent, 'Mid');
   expect(mainCheck, 'Mid');
@@ -144,12 +149,12 @@ void stopPropagationCheck() {
 
   mainCheck = '';
   nonMainCheck = '';
-  mid.addEventListener<String>(midEvent, (event, val) {
-    event.propagate = false;
-    nonMainCheck += val;
-  });
-
-  mid.fireEvent(midEvent, 'Mid');
+  mid
+    ..addEventListener<String>(midEvent, (event, val) {
+      event.propagate = false;
+      nonMainCheck += val;
+    })
+    ..fireEvent(midEvent, 'Mid');
   bottom.fireEvent(bottomEvent, 'Bottom');
   expect(mainCheck, '');
   expect(nonMainCheck, 'MidMidBottom');
@@ -163,10 +168,17 @@ void ignoreStopPropagationCheck() {
   var mainCheck = '';
   var nonMainCheck = '';
 
-  main.addEventListener<String>(midEvent, (_, val) => mainCheck += val,
-      ignoreStopPropagation: true);
-  main.addEventListener<String>(bottomEvent, (_, val) => mainCheck += val,
-      ignoreStopPropagation: true);
+  main
+    ..addEventListener<String>(
+      midEvent,
+      (_, val) => mainCheck += val,
+      ignoreStopPropagation: true,
+    )
+    ..addEventListener<String>(
+      bottomEvent,
+      (_, val) => mainCheck += val,
+      ignoreStopPropagation: true,
+    );
 
   mid.fireEvent(midEvent, 'Mid');
   expect(mainCheck, 'Mid');
@@ -191,12 +203,12 @@ void ignoreStopPropagationCheck() {
 
   mainCheck = '';
   nonMainCheck = '';
-  mid.addEventListener<String>(midEvent, (event, val) {
-    event.propagate = false;
-    nonMainCheck += val;
-  });
-
-  mid.fireEvent(midEvent, 'Mid');
+  mid
+    ..addEventListener<String>(midEvent, (event, val) {
+      event.propagate = false;
+      nonMainCheck += val;
+    })
+    ..fireEvent(midEvent, 'Mid');
   bottom.fireEvent(bottomEvent, 'Bottom');
   expect(mainCheck, 'MidBottom');
   expect(nonMainCheck, 'MidMidBottom');

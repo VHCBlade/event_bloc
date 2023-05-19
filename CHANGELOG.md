@@ -1,3 +1,8 @@
+## 4.3.4
+
+* Changed linter to very_good_analysis instead and implemented the recommended changes
+* Added Documentation
+
 ## 4.3.3
 
 * Removed Flutter dependence in BlocEventChannelDebugger

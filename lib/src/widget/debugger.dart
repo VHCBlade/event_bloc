@@ -2,15 +2,26 @@ import 'package:event_bloc/event_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
+/// Provides a [BlocEventChannelDebugger]. This allows you to handle how
+/// your debugger will behave instead of just using the default.
 class BlocEventChannelDebuggerProvider extends StatelessWidget {
-  final BlocEventChannelDebugger Function(
-      BuildContext, BlocEventChannel? parentChannel)? create;
-  final Widget child;
+  /// [create] creates the instance of the [BlocEventChannelDebugger] to be
+  /// provided.
   const BlocEventChannelDebuggerProvider({
+    required this.child,
     super.key,
     this.create,
-    required this.child,
   });
+
+  /// Creates the instance of the [BlocEventChannelDebugger] to be
+  /// provided.
+  final BlocEventChannelDebugger Function(
+    BuildContext,
+    BlocEventChannel? parentChannel,
+  )? create;
+
+  /// The widget that will be affected by the created debugger.
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {

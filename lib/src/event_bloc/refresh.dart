@@ -3,12 +3,14 @@ import 'dart:async';
 /// The [ActionQueuer] class is used to queue up [action]s and performed
 /// within a specific sequence, depending on the implementation.
 ///
-/// See [RefreshQueuer] and [SynchronizedQueuer] for concrete implementations of this class.
+/// See [RefreshQueuer] and [SingleActionQueuer] for concrete implementations of
+/// this class.
 abstract class ActionQueuer<T> {
-  final Future<T> Function() action;
-
   /// This defines the action to be done by this queuer.
   ActionQueuer(this.action);
+
+  /// The action to be done.
+  final Future<T> Function() action;
 
   /// Queues up the [action] to be
   Future<T> queue();
@@ -21,10 +23,15 @@ abstract class ActionQueuer<T> {
 /// If ran multiple times while [action] is still running, this will only
 /// run it once after the current [action] is done.
 class RefreshQueuer extends ActionQueuer<void> {
-  bool isRefreshing = false;
-  bool performRefreshAfter = false;
-
+  /// [action] is the refresh action done.
   RefreshQueuer(super.action);
+
+  /// Whether an [action] is currently being performed right now.
+  bool isRefreshing = false;
+
+  /// Whether another [action] should be called after the current one
+  /// finishes.
+  bool performRefreshAfter = false;
 
   /// Calls the [action]. If it is currently running, will queue the
   /// [action] to run again when it's done.
@@ -39,7 +46,7 @@ class RefreshQueuer extends ActionQueuer<void> {
     isRefreshing = false;
     if (performRefreshAfter) {
       performRefreshAfter = false;
-      refresh();
+      unawaited(refresh());
     }
   }
 
@@ -54,10 +61,12 @@ class RefreshQueuer extends ActionQueuer<void> {
 ///
 /// It is a good idea to run this for things such as asset loading.
 class SingleActionQueuer extends ActionQueuer<void> {
-  bool hasRan = false;
-  Completer? _completer;
-
+  /// [action] is the single action to be ran.
   SingleActionQueuer(super.action);
+
+  /// Shows whether [action] has been started or not.
+  bool hasRan = false;
+  Completer<dynamic>? _completer;
 
   @override
   Future<void> queue() async {
