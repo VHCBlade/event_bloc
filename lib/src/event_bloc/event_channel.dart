@@ -174,6 +174,10 @@ class BlocEventChannel implements Disposable {
     final potentialListeners =
         _listeners[event.eventType] as List<BlocEventListener<T>>?;
 
+    _genericListeners.forEach(
+      (listener) => listener.eventListenerAction(event, payload),
+    );
+
     if (potentialListeners == null || potentialListeners.isEmpty) {
       return;
     }

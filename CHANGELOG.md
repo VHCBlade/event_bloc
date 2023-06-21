@@ -1,3 +1,7 @@
+## 4.4.0
+
+* Added actual implementation for addGenericEventListener and removeGenericEventListener
+
 ## 4.3.4
 
 * Changed linter to very_good_analysis instead and implemented the recommended changes

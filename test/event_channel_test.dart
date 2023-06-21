@@ -11,6 +11,7 @@ void main() {
       test('Ignore', ignoreStopPropagationCheck);
     });
     test('Parent', parentCountCheck);
+    test('Generic', genericCheck);
   });
 }
 
@@ -212,6 +213,42 @@ void ignoreStopPropagationCheck() {
   bottom.fireEvent(bottomEvent, 'Bottom');
   expect(mainCheck, 'MidBottom');
   expect(nonMainCheck, 'MidMidBottom');
+}
+
+void genericCheck() {
+  final main = BlocEventChannel();
+  final mid = BlocEventChannel(main);
+  final bottom = BlocEventChannel(mid);
+
+  var mainCheck = '';
+
+  final listener = main.addGenericEventListener(
+    (_, val) => mainCheck += '$val',
+  );
+
+  mid.fireEvent(midEvent, 'Mid');
+  expect(mainCheck, 'Mid');
+  bottom.fireEvent(bottomEvent, 'Bottom');
+  expect(mainCheck, 'MidBottom');
+
+  mid.fireEvent(midEvent, 'Mid');
+  expect(mainCheck, 'MidBottomMid');
+  bottom.fireEvent(bottomEvent, 'Bottom');
+  expect(mainCheck, 'MidBottomMidBottom');
+
+  mainCheck = '';
+  mid
+    ..addEventListener<String>(midEvent, (event, val) {
+      event.propagate = false;
+    })
+    ..fireEvent(midEvent, 'Mid');
+  bottom.fireEvent(bottomEvent, 'Bottom');
+  expect(mainCheck, 'MidBottom');
+
+  main.removeGenericEventListener(listener);
+  mainCheck = '';
+  bottom.fireEvent(bottomEvent, 'Bottom');
+  expect(mainCheck, '');
 }
 
 void parentCountCheck() {
