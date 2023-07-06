@@ -5,6 +5,7 @@ void main() {
   group('Event', () {
     test('Basic', basicCheck);
     test('Multiple', multipleCheck);
+    test('UserInitiated', userInitiatedCheck);
     test('Remove', removeCheck);
     group('Propagation', () {
       test('Stop', stopPropagationCheck);
@@ -73,6 +74,64 @@ void multipleCheck() {
   bottom.fireEvent(bottomEvent, 'Both');
   expect(mainCheck, 'MidAltBottomBoth');
   expect(nonMainCheck, 'MidAltBottomBothBoth');
+}
+
+void userInitiatedCheck() {
+  final main = BlocEventChannel();
+  final mid = BlocEventChannel(main);
+  final bottom = BlocEventChannel(mid);
+  final alt = BlocEventChannel(main);
+
+  var mainCheck = '';
+  var nonMainCheck = '';
+
+  main
+    ..addEventListener<String>(
+      midEvent,
+      (event, val) => event.eventType.userInitiated ? mainCheck += val : null,
+    )
+    ..addEventListener<String>(
+      bottomEvent,
+      (event, val) => event.eventType.userInitiated ? null : mainCheck += val,
+    )
+    ..addEventListener<String>(
+      altEvent,
+      (event, val) => event.eventType.userInitiated ? null : mainCheck += val,
+    );
+  mid.addEventListener<String>(
+    midEvent,
+    (event, val) => event.isUserInitiated ? null : nonMainCheck += val,
+  );
+  alt.addEventListener<String>(
+    altEvent,
+    (event, val) => event.isUserInitiated ? nonMainCheck += val : null,
+  );
+  bottom.addEventListener<String>(
+    bottomEvent,
+    (event, val) => event.isUserInitiated ? nonMainCheck += val : null,
+  );
+
+  mid.fireEvent(midEvent, 'Mid');
+  expect(mainCheck, 'Mid');
+  expect(nonMainCheck, '');
+  mid.fireEvent(midEvent.copyWith(userInitiated: false), 'Mid');
+  expect(mainCheck, 'Mid');
+  expect(nonMainCheck, mainCheck);
+
+  alt.fireEvent(altEvent.asUserInitiated, 'Alt');
+  expect(mainCheck, 'Mid');
+  expect(nonMainCheck, 'MidAlt');
+  alt.fireEvent(altEvent.asNotUserInitiated, 'Alt');
+  expect(mainCheck, 'MidAlt');
+  expect(nonMainCheck, 'MidAlt');
+
+  bottom.fireEvent(bottomEvent.asNotUserInitiated.asUserInitiated, 'Bottom');
+  expect(mainCheck, 'MidAlt');
+  expect(nonMainCheck, 'MidAltBottom');
+
+  bottom.fireEvent(bottomEvent.asNotUserInitiated.asNotUserInitiated, 'Bottom');
+  expect(mainCheck, 'MidAltBottom');
+  expect(nonMainCheck, mainCheck);
 }
 
 void removeCheck() {

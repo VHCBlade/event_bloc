@@ -1,3 +1,8 @@
+## 4.5.0
+
+* Added userInitated to BlocEventType that can be set before firing an event to add more information
+* Added isUserInitiated convenience function for BlocEvent
+
 ## 4.4.0
 
 * Added actual implementation for addGenericEventListener and removeGenericEventListener
