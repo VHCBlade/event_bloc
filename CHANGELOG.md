@@ -1,3 +1,7 @@
+## 4.5.1
+
+* Added withDelay optional parameter to BuildContext's fireEvent as a convenience when calling it while the Widgets are building.
+
 ## 4.5.0
 
 * Added userInitated to BlocEventType that can be set before firing an event to add more information

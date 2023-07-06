@@ -21,7 +21,7 @@ Future<void> createWidget(
       child: Builder(
         builder: (context) => CupertinoButton(
           key: const ValueKey('1'),
-          onPressed: () => context.fireEvent(adder, 10),
+          onPressed: () => context.fireEvent(adder, 10, withDelay: true),
           child: Container(),
         ),
       ),

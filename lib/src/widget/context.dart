@@ -6,7 +6,20 @@ import 'package:provider/provider.dart';
 extension EventBlocBuildContext on BuildContext {
   /// Convenience function that will find the closest [BlocEventChannel] in the
   /// [BuildContext] and calls [fireEvent]
-  void fireEvent<T>(BlocEventType<T> eventType, T payload) {
+  ///
+  /// [withDelay] will cause the event to be fired with a short delay. This is
+  /// useful when calling fireEvent in initState or other parts of the Widget
+  /// building command to avoid interrupting the draw function.
+  void fireEvent<T>(
+    BlocEventType<T> eventType,
+    T payload, {
+    bool withDelay = false,
+  }) {
+    if (withDelay) {
+      Future<void>.delayed(Duration.zero)
+          .then((_) => fireEvent(eventType, payload));
+      return;
+    }
     read<BlocEventChannel>().fireEvent(eventType, payload);
   }
 
