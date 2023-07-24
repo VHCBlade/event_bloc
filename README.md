@@ -36,18 +36,31 @@ The heart and soul of the pattern of course is the BLoC (Business Logic Componen
 ```dart
 import 'package:event_bloc/event_bloc.dart';
 
-const INCREMENT_EVENT = 'increment';
-const RESET_COUNTER_EVENT = 'reset-counter';
+enum ExampleEvents<T> {
+  increment<void>(),
+  decrement<void>(),
+  resetCounter<void>(),
+  ;
+
+  /// Place this function in your event enums to automatically generate the
+  /// [BlocEventType]s from your enum values!
+  BlocEventType<T> get event => BlocEventType<T>('$this');
+}
 
 class CounterBloc extends Bloc {
   int counter = 0;
 
   CounterBloc({super.parentChannel}) {
     // Add listeners to event channel
-    eventChannel.addEventListener(INCREMENT_EVENT,
-        BlocEventChannel.simpleListener((_) => incrementCounter()));
-    eventChannel.addEventListener(RESET_COUNTER_EVENT,
-        BlocEventChannel.simpleListener((val) => resetCounter(val)));
+    eventChannel
+      ..addEventListener(
+        ExampleEvents.increment.event,
+        (_, a) => incrementCounter(),
+      )
+      ..addEventListener(
+        ExampleEvents.resetCounter.event,
+        (_, a) => decrementCounter(),
+      );
   }
 
   void incrementCounter() {

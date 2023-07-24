@@ -67,7 +67,9 @@ class ExampleScreen extends StatelessWidget {
           Container(height: 10),
           ElevatedButton(
             // Alternate way of calling using an event. This doesn't require
-            // the bloc, just the event channel.
+            // the bloc, just the event channel. Significantly you can use this
+            // for cross-cutting concerns in a way that isn't possible with just
+            // calling the function directly
             onPressed: () =>
                 context.fireEvent<void>(ExampleEvents.decrement.event, null),
             child: const Text('Decrement'),
