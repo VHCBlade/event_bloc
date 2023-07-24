@@ -1,3 +1,7 @@
+## 4.5.2
+
+* Updated Readme and example
+
 ## 4.5.1
 
 * Added withDelay optional parameter to BuildContext's fireEvent as a convenience when calling it while the Widgets are building.
