@@ -3,7 +3,7 @@ import 'package:event_bloc/src/event_bloc/event.dart';
 /// Event Listener
 typedef BlocEventListenerAction<T> = void Function(BlocEvent<T> event, T value);
 
-/// These are attached to [BlocEventChannel]s to perform action when a specific
+/// These are attached to [BaseEventChannel]s to perform action when a specific
 /// type of event passes through the event channel.
 class BlocEventListener<T> {
   /// [eventListenerAction] is the action that will be done when the specific
@@ -24,11 +24,16 @@ class BlocEventListener<T> {
   final bool ignoreStopPropagation;
 
   /// Convenience function that will unsubscribe this from the
-  /// [BlocEventChannel] that this is subscribed to. This function is
+  /// [BaseEventChannel] that this is subscribed to. This function is
   /// idempotent so it can be called multiple times.
   late final void Function() unsubscribe;
 }
 
+/// Over the [BaseEventChannel] this class has an [eventBus] and various methods
+/// to interact with them. The event bus is primarily used as a general [Stream]
+/// that uses events. The [eventBus] is a single [BaseEventChannel] shared among
+/// all [BlocEventChannel]s in the same event channel tree.
+///
 /// [BlocEventChannel] represents a node in a tree of event channels, mirroring
 /// the widget tree to an extent. The tree is only connected upwards
 /// (child knows its parent).
@@ -44,7 +49,7 @@ class BlocEventListener<T> {
 /// While the event channel system might mirror the widget tree, it doesn't
 /// need to be used alongside it. This lets you use the [BlocEventChannel]
 /// in non-Widget environments.
-class BlocEventChannel implements Disposable {
+class BlocEventChannel extends BaseEventChannel {
   /// [_parentChannel] is the parent of this channel.
   /// This can only be set in the constructor to ensure that the
   /// [BlocEventChannel] tree does in fact remain a tree with no cycles.
@@ -52,8 +57,78 @@ class BlocEventChannel implements Disposable {
   /// [allListener] is called for every single event that passed through this
   /// event channel. Regardless of the type of the event. This should mostly be
   /// used for debugging.
-  BlocEventChannel([this._parentChannel, this.allListener]);
-  final BlocEventChannel? _parentChannel;
+  // ignore: use_super_parameters
+  BlocEventChannel([
+    this._parentBlocChannel,
+    BlocEventListenerAction<dynamic>? allListener,
+  ]) : super(_parentBlocChannel, allListener);
+
+  final BlocEventChannel? _parentBlocChannel;
+
+  final List<BlocEventListener<dynamic>> _eventBusListeners = [];
+
+  /// Primarily used as a general [Stream] that uses events.
+  ///
+  /// The [eventBus] is a single [BaseEventChannel] shared among
+  /// all [BlocEventChannel]s in the same event channel tree.
+  ///
+  /// If you want to dispose [BlocEventListener]s you add to this
+  /// [eventBus] when you dispose this [BlocEventChannel], use
+  /// [addEventBusListener] instead.
+  late final BaseEventChannel eventBus =
+      _parentBlocChannel?.eventBus ?? BaseEventChannel();
+
+  /// Convenience function for adding [BlocEventListener]s to the
+  /// [eventBus] that will automatically be closed when [dispose]
+  /// is called.
+  BlocEventListener<T> addEventBusListener<T>(
+    BlocEventType<T> eventType,
+    BlocEventListenerAction<T> listenerAction, {
+    bool ignoreStopPropagation = false,
+  }) {
+    final listener = eventBus.addEventListener(
+      eventType,
+      listenerAction,
+      ignoreStopPropagation: ignoreStopPropagation,
+    );
+
+    _eventBusListeners.add(listener);
+
+    return listener;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _eventBusListeners.forEach((element) => element.unsubscribe());
+  }
+}
+
+/// [BaseEventChannel] represents a node in a tree of event channels, mirroring
+/// the widget tree to an extent. The tree is only connected upwards
+/// (child knows its parent).
+///
+/// [BlocEventListener]s can be added to each [BaseEventChannel]. These will
+/// listen to events fired directly to the event channel. By default, these
+/// events will also be propagated up the tree, effectively refiring the event
+/// to each parent.
+///
+/// BlocProvider and RepositoryProvider will both automatically Provide the
+/// event channel down the widget tree.
+///
+/// While the event channel system might mirror the widget tree, it doesn't
+/// need to be used alongside it. This lets you use the [BaseEventChannel]
+/// in non-Widget environments.
+class BaseEventChannel implements Disposable {
+  /// [_parentChannel] is the parent of this channel.
+  /// This can only be set in the constructor to ensure that the
+  /// [BaseEventChannel] tree does in fact remain a tree with no cycles.
+  ///
+  /// [allListener] is called for every single event that passed through this
+  /// event channel. Regardless of the type of the event. This should mostly be
+  /// used for debugging.
+  BaseEventChannel([this._parentChannel, this.allListener]);
+  final BaseEventChannel? _parentChannel;
   final Map<BlocEventType<dynamic>, List<BlocEventListener<dynamic>>>
       _listeners = {};
   final List<BlocEventListener<dynamic>> _genericListeners = [];
@@ -62,7 +137,7 @@ class BlocEventChannel implements Disposable {
   /// regardless of [BlocEventType].
   final BlocEventListenerAction<dynamic>? allListener;
 
-  /// Counts how deep this [BlocEventChannel] is the [BlocEventChannel] tree.
+  /// Counts how deep this [BaseEventChannel] is the [BaseEventChannel] tree.
   int get parentCount =>
       _parentChannel == null ? 0 : 1 + _parentChannel!.parentCount;
 
@@ -87,7 +162,7 @@ class BlocEventChannel implements Disposable {
 
   /// Adds a [BlocEventListener] for the specific [eventType]. The created
   /// listener will run the provided [listenerAction] every time the specific
-  /// [eventType] passes through this [BlocEventChannel]
+  /// [eventType] passes through this [BaseEventChannel]
   ///
   /// Multiple listeners can be added for each [eventType].
   ///

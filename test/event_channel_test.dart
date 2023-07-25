@@ -7,6 +7,7 @@ void main() {
     test('Multiple', multipleCheck);
     test('UserInitiated', userInitiatedCheck);
     test('Remove', removeCheck);
+    test('EventBus', eventBusCheck);
     group('Propagation', () {
       test('Stop', stopPropagationCheck);
       test('Ignore', ignoreStopPropagationCheck);
@@ -41,7 +42,7 @@ void basicCheck() {
 
 const midEvent = BlocEventType<String>('Mid');
 const bottomEvent = BlocEventType<String>('Bottom');
-const altEvent = BlocEventType<String>('Alt');
+const altEvent = BlocEventType<String>.fromObject(120);
 
 void multipleCheck() {
   final main = BlocEventChannel();
@@ -132,6 +133,50 @@ void userInitiatedCheck() {
   bottom.fireEvent(bottomEvent.asNotUserInitiated.asNotUserInitiated, 'Bottom');
   expect(mainCheck, 'MidAltBottom');
   expect(nonMainCheck, mainCheck);
+}
+
+void eventBusCheck() {
+  final main = BlocEventChannel();
+  final mid = BlocEventChannel(main);
+  final bottom = BlocEventChannel(mid);
+  final alt = BlocEventChannel(main);
+
+  var mainCheck = '';
+  var nonMainCheck = '';
+
+  main
+    ..addEventBusListener<String>(midEvent, (_, val) => mainCheck += val)
+    ..addEventBusListener<String>(bottomEvent, (_, val) => mainCheck += val)
+    ..addEventBusListener<String>(altEvent, (_, val) => mainCheck += val);
+  mid.addEventBusListener<String>(midEvent, (_, val) => nonMainCheck += val);
+  alt.addEventBusListener<String>(altEvent, (_, val) => nonMainCheck += val);
+  bottom.addEventBusListener<String>(
+    bottomEvent,
+    (_, val) => nonMainCheck += val,
+  );
+
+  mid.eventBus.fireEvent(midEvent, 'Mid');
+  expect(mainCheck, 'Mid');
+  expect(mainCheck, nonMainCheck);
+  alt.eventBus.fireEvent(altEvent, 'Alt');
+  expect(mainCheck, 'MidAlt');
+  expect(mainCheck, nonMainCheck);
+  bottom.eventBus.fireEvent(bottomEvent, 'Bottom');
+  expect(mainCheck, 'MidAltBottom');
+  expect(mainCheck, nonMainCheck);
+
+  alt.dispose();
+  main.dispose();
+
+  mid.eventBus.fireEvent(midEvent, 'Mid');
+  expect(mainCheck, 'MidAltBottom');
+  expect(nonMainCheck, 'MidAltBottomMid');
+  alt.eventBus.fireEvent(altEvent, 'Alt');
+  expect(mainCheck, 'MidAltBottom');
+  expect(nonMainCheck, 'MidAltBottomMid');
+  bottom.eventBus.fireEvent(bottomEvent, 'Bottom');
+  expect(mainCheck, 'MidAltBottom');
+  expect(nonMainCheck, 'MidAltBottomMidBottom');
 }
 
 void removeCheck() {

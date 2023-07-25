@@ -1,3 +1,9 @@
+## 4.6.0
+
+* Created BaseEventChannel and changed BlocEventChannel to extend from BaseEventChannel
+* Added eventBus to BlocEventChannel that is a BaseEventChannel shared throughout the entire BlocEventChannel Tree
+* Added tests for Blocs
+
 ## 4.5.2
 
 * Updated Readme and example
