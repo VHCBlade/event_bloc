@@ -1,7 +1,6 @@
 import 'package:event_bloc/event_bloc.dart';
 import 'package:event_bloc_tester/event_bloc_tester.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:tuple/tuple.dart';
 
 import 'test_classes.dart';
 
@@ -16,20 +15,20 @@ void main() {
   });
 }
 
-Map<String, Tuple2<BlocEventType<dynamic>, dynamic> Function()>
+Map<String, (BlocEventType<dynamic>, dynamic) Function()>
     get commonTestCases => {
-          'int 1': () => Tuple2(TestBlocEvent.intEvent.event, 1),
-          'int 6': () => Tuple2(TestBlocEvent.intEvent.event, 6),
-          'bool true': () => Tuple2(TestBlocEvent.boolEvent.event, true),
-          'bool false': () => Tuple2(TestBlocEvent.boolEvent.event, false),
-          'void': () => Tuple2(TestBlocEvent.reloadEvent.event, null),
-          'bool cool': () => Tuple2(TestBlocEvent.stringEvent.event, 'cool'),
+          'int 1': () => (TestBlocEvent.intEvent.event, 1),
+          'int 6': () => (TestBlocEvent.intEvent.event, 6),
+          'bool true': () => (TestBlocEvent.boolEvent.event, true),
+          'bool false': () => (TestBlocEvent.boolEvent.event, false),
+          'void': () => (TestBlocEvent.reloadEvent.event, null),
+          'bool cool': () => (TestBlocEvent.stringEvent.event, 'cool'),
           'bool Amazing': () =>
-              Tuple2(TestBlocEvent.stringEvent.event, 'Amazing'),
+              (TestBlocEvent.stringEvent.event, 'Amazing'),
         };
 
 void unhandledTest() {
-  SerializableListTester<Tuple2<BlocEventType<dynamic>, dynamic>>(
+  SerializableListTester<(BlocEventType<dynamic>, dynamic)>(
     testGroupName: 'BlocEventChannel Debugger Print',
     mainTestName: 'Unhandled',
     mode: ListTesterMode.auto,
@@ -65,7 +64,7 @@ void handledTest() {
 }
 
 void everythingTest() {
-  SerializableListTester<Tuple2<BlocEventType<dynamic>, dynamic>>(
+  SerializableListTester<(<BlocEventType<dynamic>, dynamic)>(
     testGroupName: 'BlocEventChannel Debugger Print',
     mainTestName: 'Everything',
     mode: ListTesterMode.auto,
@@ -83,7 +82,7 @@ void everythingTest() {
 }
 
 void renamedTest() {
-  SerializableListTester<Tuple2<BlocEventType<dynamic>, dynamic>>(
+  SerializableListTester<(<BlocEventType<dynamic>, dynamic)>(
     testGroupName: 'BlocEventChannel Debugger Print',
     mainTestName: 'Renamed Everything',
     // mode: ListTesterMode.generateOutput,
