@@ -90,7 +90,7 @@ class DependedTestRepository extends Repository {
         channel.addEventListener<String>(
           TestBlocEvent.stringEvent.event,
           (_, val) => value = val,
-        )
+        ),
       ];
 }
 

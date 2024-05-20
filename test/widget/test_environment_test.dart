@@ -19,7 +19,7 @@ void dependencyCheck() {
           parentChannel: eventChannel,
           repository: readable.read<DependedTestRepository>(),
         ),
-      )
+      ),
     ],
     repositoryBuilders: [
       RepositoryBuilder<Repository>(
@@ -52,7 +52,7 @@ void basicCheck() {
       BlocBuilder<TestBloc>(
         (readable, eventChannel) =>
             TestBloc.fromSetter((val) => blocVal = val, eventChannel),
-      )
+      ),
     ],
     repositoryBuilders: [
       RepositoryBuilder<TestRepository>(

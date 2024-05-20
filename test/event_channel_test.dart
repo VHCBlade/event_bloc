@@ -17,8 +17,8 @@ void main() {
   });
 }
 
-const cool = BlocEventType<String>('Cool');
-const listener = BlocEventType<String>('Listener');
+const cool = BlocEventType<String?>('Cool');
+const listener = BlocEventType<String?>('Listener');
 const intense = BlocEventType<String>('Intense');
 
 void basicCheck() {

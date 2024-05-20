@@ -15,17 +15,16 @@ void main() {
   });
 }
 
-Map<String, (BlocEventType<dynamic>, dynamic) Function()>
-    get commonTestCases => {
-          'int 1': () => (TestBlocEvent.intEvent.event, 1),
-          'int 6': () => (TestBlocEvent.intEvent.event, 6),
-          'bool true': () => (TestBlocEvent.boolEvent.event, true),
-          'bool false': () => (TestBlocEvent.boolEvent.event, false),
-          'void': () => (TestBlocEvent.reloadEvent.event, null),
-          'bool cool': () => (TestBlocEvent.stringEvent.event, 'cool'),
-          'bool Amazing': () =>
-              (TestBlocEvent.stringEvent.event, 'Amazing'),
-        };
+Map<String, (BlocEventType<dynamic>, dynamic) Function()> get commonTestCases =>
+    {
+      'int 1': () => (TestBlocEvent.intEvent.event, 1),
+      'int 6': () => (TestBlocEvent.intEvent.event, 6),
+      'bool true': () => (TestBlocEvent.boolEvent.event, true),
+      'bool false': () => (TestBlocEvent.boolEvent.event, false),
+      'void': () => (TestBlocEvent.reloadEvent.event, null),
+      'bool cool': () => (TestBlocEvent.stringEvent.event, 'cool'),
+      'bool Amazing': () => (TestBlocEvent.stringEvent.event, 'Amazing'),
+    };
 
 void unhandledTest() {
   SerializableListTester<(BlocEventType<dynamic>, dynamic)>(
@@ -46,7 +45,7 @@ void unhandledTest() {
 }
 
 void handledTest() {
-  SerializableListTester<Tuple2<BlocEventType<dynamic>, dynamic>>(
+  SerializableListTester<(BlocEventType<dynamic>, dynamic)>(
     testGroupName: 'BlocEventChannel Debugger Print',
     mainTestName: 'Handled',
     mode: ListTesterMode.auto,
@@ -64,7 +63,7 @@ void handledTest() {
 }
 
 void everythingTest() {
-  SerializableListTester<(<BlocEventType<dynamic>, dynamic)>(
+  SerializableListTester<(BlocEventType<dynamic>, dynamic)>(
     testGroupName: 'BlocEventChannel Debugger Print',
     mainTestName: 'Everything',
     mode: ListTesterMode.auto,
@@ -82,11 +81,10 @@ void everythingTest() {
 }
 
 void renamedTest() {
-  SerializableListTester<(<BlocEventType<dynamic>, dynamic)>(
+  SerializableListTester<(BlocEventType<dynamic>, dynamic)>(
     testGroupName: 'BlocEventChannel Debugger Print',
     mainTestName: 'Renamed Everything',
-    // mode: ListTesterMode.generateOutput,
-    mode: ListTesterMode.testOutput,
+    mode: ListTesterMode.auto,
     testFunction: (value, tester) {
       final debugger = BlocEventChannelDebugger(
         name: '[This is Epic!]',
@@ -103,7 +101,7 @@ void renamedTest() {
 
 void test(
   BlocEventChannelDebugger debugger,
-  Tuple2<BlocEventType<dynamic>, dynamic> value,
+  (BlocEventType<dynamic>, dynamic) value,
 ) {
   BlocEventChannel addEventChannel(
     BlocEventChannel channel,
@@ -174,6 +172,5 @@ void test(
       subSubIntBranchPropagte,
     ]);
   }
-  eventChannels
-      .forEach((element) => element.fireEvent(value.item1, value.item2));
+  eventChannels.forEach((element) => element.fireEvent(value.$1, value.$2));
 }
