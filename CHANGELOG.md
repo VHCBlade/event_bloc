@@ -1,3 +1,7 @@
+## 4.7.0
+
+* Added event_bloc
+
 ## 4.6.0
 
 * Created BaseEventChannel and changed BlocEventChannel to extend from BaseEventChannel
