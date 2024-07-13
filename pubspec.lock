@@ -101,10 +101,10 @@ packages:
     dependency: "direct dev"
     description:
       name: event_bloc_tester
-      sha256: "04d7b9829856bfe4ef49bb185b8f2d2da4ff153344d81d9ed42f82024f6f87b1"
+      sha256: "45f0c7cba0150cd08053fc8d7e1dddf6ea181c6e2535f4cec6b816e37b62fe9c"
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.1.6+1"
+    version: "0.1.7"
   fake_async:
     dependency: transitive
     description:
@@ -416,14 +416,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.6.0"
-  tuple:
-    dependency: transitive
-    description:
-      name: tuple
-      sha256: a97ce2013f240b2f3807bcbaf218765b6f301c3eff91092bcfa23a039e7dd151
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "2.0.2"
   typed_data:
     dependency: transitive
     description:
