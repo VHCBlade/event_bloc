@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   group('Event', () {
     test('Basic', basicCheck);
+    test('AllowDynamic', allowDynamicCheck);
     test('Multiple', multipleCheck);
     test('UserInitiated', userInitiatedCheck);
     test('Remove', removeCheck);
@@ -38,6 +39,23 @@ void basicCheck() {
   expect(check, 'CoolnullmegaCool');
   channel.fireEvent(intense, 'mega');
   expect(check, 'CoolnullmegaCool');
+}
+
+enum DataEvent<T> {
+  data<int>();
+
+  BlocEventType<T> get event => BlocEventType.fromObject(this);
+}
+
+void allowDynamicCheck() {
+  final channel = BlocEventChannel();
+  expect(
+    () => channel.addEventListener<dynamic>(
+      DataEvent.data.event,
+      (_, a) => DataEvent.data.toString(),
+    ),
+    throwsA(isAssertionError),
+  );
 }
 
 const midEvent = BlocEventType<String>('Mid');

@@ -173,11 +173,21 @@ class BaseEventChannel implements Disposable {
   /// [removeEventListener] will remove the listener added with this function.
   /// Alternatively, you could simply call the [BlocEventListener.unsubscribe]
   /// function provided in [BlocEventListener].
+  ///
+  /// If [allowDynamic] is false, then an assertion error will be fired if this
+  /// function is called without specifying a generic.
   BlocEventListener<T> addEventListener<T>(
     BlocEventType<T> eventType,
     BlocEventListenerAction<T> listenerAction, {
     bool ignoreStopPropagation = false,
+    bool allowDynamic = false,
   }) {
+    assert(
+        allowDynamic || T != dynamic,
+        'Generic should likely be set or else '
+        'fired events might fail. Either specify a more specific type or set '
+        'allowDynamic to true');
+
     var potentialListeners = _listeners[eventType];
 
     if (potentialListeners == null) {

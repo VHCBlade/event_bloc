@@ -23,9 +23,11 @@ class BlocEventChannelDebugger {
     this.name = '[BlocEventChannel]',
     this.printHandled = false,
     this.printUnhandled = true,
+    this.printBus = false,
     this.printFunction,
   }) {
     eventChannel = BlocEventChannel(parentChannel, handleEvent);
+    eventChannel.eventBus.addGenericEventListener(handleBusEvent);
   }
 
   /// [BlocEventChannel]s need this as an ancestor to be subject to this
@@ -43,6 +45,10 @@ class BlocEventChannelDebugger {
   /// [BlocEventListener] will be printed.
   final bool printHandled;
 
+  /// If true, ALL messages that are fired in [eventChannel]'s
+  /// event bus will be printed.
+  final bool printBus;
+
   /// Handles how the debug messages will be printed.
   ///
   /// If not provided, all messages will be printed to console.
@@ -52,20 +58,35 @@ class BlocEventChannelDebugger {
     String Function() defaultMessage,
   )? printFunction;
 
+  /// Removes the listeners from the event bus
+  void dispose() {}
+
   /// Handles all [BlocEvent]s that pass through any of the descendants of
   /// [eventChannel]
   void handleEvent(BlocEvent<dynamic> event, dynamic value) {
     final shouldPrint = event.timesHandled == 0 ? printUnhandled : printHandled;
 
     if (shouldPrint) {
-      printFunction == null
-          ? defaultPrint(event, value)
-          : printFunction!(
-              event,
-              value,
-              () => createPrintMessage(event, value),
-            );
+      _printEvent(event, value);
     }
+  }
+
+  /// Handles all [BlocEvent]s that pass through any of the descendants of
+  /// [eventChannel]'s eventBus
+  void handleBusEvent(BlocEvent<dynamic> event, dynamic value) {
+    if (printBus) {
+      _printEvent(event, value);
+    }
+  }
+
+  void _printEvent(BlocEvent<dynamic> event, dynamic value) {
+    printFunction == null
+        ? defaultPrint(event, value)
+        : printFunction!(
+            event,
+            value,
+            () => createPrintMessage(event, value),
+          );
   }
 
   /// Prints to console. used if [printFunction] is unspecified.

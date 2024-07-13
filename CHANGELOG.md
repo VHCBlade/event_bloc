@@ -1,6 +1,7 @@
 ## 4.7.0
 
-* Added event_bloc
+* Added event_bloc_errors
+* Added generic check to ensure that addEventListener has a non-dynamic type annotation
 
 ## 4.6.0
 

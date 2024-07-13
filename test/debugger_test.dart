@@ -11,6 +11,8 @@ void main() {
       group('Handled', handledTest);
       group('Everything', everythingTest);
       group('Renamed Everything', renamedTest);
+      group('No Bus', noBusTest);
+      group('Bus', busTest);
     });
   });
 }
@@ -99,6 +101,44 @@ void renamedTest() {
   ).runTests();
 }
 
+void noBusTest() {
+  SerializableListTester<(BlocEventType<dynamic>, dynamic)>(
+    testGroupName: 'BlocEventChannel Debugger Print',
+    mainTestName: 'No Bus',
+    mode: ListTesterMode.auto,
+    testFunction: (value, tester) {
+      final debugger = BlocEventChannelDebugger(
+        printUnhandled: false,
+        printHandled: false,
+        printBus: false,
+        printFunction: (_, a, message) => tester.addTestValue(message()),
+      );
+
+      test(debugger, value);
+    },
+    testMap: commonTestCases,
+  ).runTests();
+}
+
+void busTest() {
+  SerializableListTester<(BlocEventType<dynamic>, dynamic)>(
+    testGroupName: 'BlocEventChannel Debugger Print',
+    mainTestName: 'Bus',
+    mode: ListTesterMode.auto,
+    testFunction: (value, tester) {
+      final debugger = BlocEventChannelDebugger(
+        printUnhandled: false,
+        printHandled: false,
+        printBus: true,
+        printFunction: (_, a, message) => tester.addTestValue(message()),
+      );
+
+      test(debugger, value);
+    },
+    testMap: commonTestCases,
+  ).runTests();
+}
+
 void test(
   BlocEventChannelDebugger debugger,
   (BlocEventType<dynamic>, dynamic) value,
@@ -113,6 +153,7 @@ void test(
         ..addEventListener(
           event,
           (event, value) => event.propagate = propagate,
+          allowDynamic: true,
         );
 
   final intBranch = addEventChannel(
@@ -172,5 +213,7 @@ void test(
       subSubIntBranchPropagte,
     ]);
   }
-  eventChannels.forEach((element) => element.fireEvent(value.$1, value.$2));
+  eventChannels
+    ..forEach((element) => element.fireEvent(value.$1, value.$2))
+    ..forEach((element) => element.eventBus.fireEvent(value.$1, value.$2));
 }
