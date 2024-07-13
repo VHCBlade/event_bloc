@@ -9,7 +9,7 @@ import 'package:event_bloc/event_bloc.dart';
 ///
 /// Even if [BlocEvent.propagate] is false, the will still be subject to
 /// debugging.
-class BlocEventChannelDebugger {
+class BlocEventChannelDebugger implements Disposable {
   /// [name] is prepended before all debug messages
   ///
   /// [parentChannel] is made the parent channel of [eventChannel]
@@ -27,12 +27,14 @@ class BlocEventChannelDebugger {
     this.printFunction,
   }) {
     eventChannel = BlocEventChannel(parentChannel, handleEvent);
-    eventChannel.eventBus.addGenericEventListener(handleBusEvent);
+    _listener = eventChannel.eventBus.addGenericEventListener(handleBusEvent);
   }
 
   /// [BlocEventChannel]s need this as an ancestor to be subject to this
   /// debugger.
   late final BlocEventChannel eventChannel;
+
+  late final BlocEventListener<dynamic> _listener;
 
   /// Prepended before all debug messages.
   final String name;
@@ -58,8 +60,10 @@ class BlocEventChannelDebugger {
     String Function() defaultMessage,
   )? printFunction;
 
-  /// Removes the listeners from the event bus
-  void dispose() {}
+  @override
+  void dispose() {
+    _listener.unsubscribe();
+  }
 
   /// Handles all [BlocEvent]s that pass through any of the descendants of
   /// [eventChannel]
